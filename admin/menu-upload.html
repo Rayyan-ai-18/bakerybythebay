@@ -6,287 +6,127 @@
     <title>Bakery by the Bay - Upload Menu</title>
     <link rel="stylesheet" href="../styles.css">
     <style>
-        .container {
+        .upload-container {
             max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            margin: 0 auto;
+            padding: 1rem 0;
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        .header h1 {
-            color: #ff6b6b;
-            margin: 0;
-            font-size: 1.5rem;
-        }
-        .btn-back {
-            background: transparent;
-            border: 1px solid #ff6b6b;
-            color: #ff6b6b;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            transition: background 0.3s, color 0.3s;
-        }
-        .btn-back:hover {
-            background: #ff6b6b;
-            color: white;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-        .step {
-            display: flex;
-            align-items: center;
+        .upload-container .card {
             margin-bottom: 1.5rem;
+        }
+        .menu-item-inputs { display: none; margin-top: 1rem; }
+        .menu-item-inputs.active { display: block; }
+        .menu-item-card.editable { border: 2px dashed var(--color-border); }
+        .menu-item-card.editable:hover { border-color: var(--color-foreground); }
+        .instructions-box {
+            background: var(--color-light-bg);
+            border-left: 1px solid var(--color-foreground);
             padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-        .step-number {
-            background: #ff6b6b;
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            margin-right: 1rem;
-            flex-shrink: 0;
-        }
-        .step-content {
-            flex: 1;
-        }
-        .step-content h3 {
-            margin: 0 0 0.5rem 0;
-            color: #333;
-        }
-        .step-content p {
-            margin: 0;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        .camera-container {
-            text-align: center;
-            margin: 2rem 0;
-        }
-        #videoElement {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 8px;
-            background: #000;
-            margin-bottom: 1rem;
-        }
-        .btn-camera {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin: 0.5rem;
-            transition: background 0.3s;
-        }
-        .btn-camera:hover {
-            background: #ff5252;
-        }
-        .btn-camera:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        .btn-upload {
-            background: #2ed573;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin: 0.5rem;
-            transition: background 0.3s;
-        }
-        .btn-upload:hover {
-            background: #28c465;
-        }
-        .btn-upload:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        .file-input {
-            display: none;
-        }
-        .menu-items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        .menu-item-card {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 1.5rem;
-            border: 2px dashed #ddd;
-            transition: all 0.3s;
-        }
-        .menu-item-card.editable {
-            border-color: #ff6b6b;
-            background: #fff;
-        }
-        .menu-item-card h4 {
-            margin: 0 0 0.5rem 0;
-            color: #333;
-        }
-        .menu-item-card .price {
-            font-weight: 600;
-            color: #ff6b6b;
-            font-size: 1.1rem;
-            margin: 0.25rem 0;
-        }
-        .menu-item-card .category {
-            background: #eee;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.875rem;
-            display: inline-block;
-            margin-bottom: 0.5rem;
-        }
-        .menu-item-inputs {
-            display: none;
-            margin-top: 1rem;
-        }
-        .menu-item-inputs.active {
-            display: block;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.25rem;
-            font-weight: 600;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 2px solid #eee;
-            border-radius: 6px;
-            font-size: 0.9rem;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: #ff6b6b;
-        }
-        .btn-publish {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: block;
-            width: 100%;
-            max-width: 300px;
-            margin: 2rem auto 0;
-            transition: background 0.3s;
-        }
-        .btn-publish:hover {
-            background: #ff5252;
-        }
-        .btn-publish:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #777;
-        }
-        .error-message {
-            background: #fee;
-            color: #c33;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid #f55;
-            margin: 1rem 0;
-            display: none;
-        }
-        .success-message {
-            background: #efe;
-            color: #2c7;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid #2ed573;
-            margin: 1rem 0;
-            display: none;
-        }
-        .instructions {
-            background: #fff8f0;
-            border-left: 4px solid #ff6b6b;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
-            color: #555;
+            font-size: var(--font-size--small);
+            color: var(--color-muted-text);
+            margin-bottom: 1.5rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Upload Menu</h1>
-            <button class="btn-back" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
-        </div>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-brand">
+                <h2>🥐 Bakery Admin</h2>
+                <p>Management Portal</p>
+            </div>
+            <nav class="admin-sidebar-nav">
+                <a href="dashboard.html" class="admin-sidebar-link">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="menu-upload.html" class="admin-sidebar-link active">
+                    <span>📸</span> Upload Menu
+                </a>
+                <a href="/menu/" class="admin-sidebar-link">
+                    <span>🍞</span> View Site
+                </a>
+            </nav>
+            <div class="admin-sidebar-footer">
+                <button class="btn btn--ghost btn--sm btn--block" id="btnLogout" style="color: rgba(255,255,255,0.6); font-size: 0.8rem;">
+                    🚪 Sign Out
+                </button>
+            </div>
+        </aside>
 
-        <div id="error-message" class="error-message"></div>
-        <div id="success-message" class="success-message"></div>
+        <!-- Main Content -->
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <h1>Upload Menu</h1>
+            </header>
 
-        <div class="card">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Capture or Upload Menu Photo</h3>
-                    <p>Take a photo of today's menu or upload an image file</p>
+            <div class="admin-content">
+                <div class="upload-container">
+                    <div id="error-message" class="message message--error"></div>
+                    <div id="success-message" class="message message--success"></div>
+
+                    <!-- Step Progress -->
+                    <div class="upload-steps">
+                        <div class="upload-step active" id="step1">
+                            <span class="upload-step-number">1</span>
+                            <span class="upload-step-text">Capture Menu</span>
+                        </div>
+                        <div class="upload-step" id="step2">
+                            <span class="upload-step-number">2</span>
+                            <span class="upload-step-text">Review Items</span>
+                        </div>
+                        <div class="upload-step" id="step3">
+                            <span class="upload-step-number">3</span>
+                            <span class="upload-step-text">Publish</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Capture or Upload -->
+                    <div class="card">
+                        <div class="card__header">
+                            <span style="font-size:1.25rem;">📸</span>
+                            <h3>Capture or Upload Menu Photo</h3>
+                        </div>
+                        <p class="text-muted" style="margin-bottom:1rem;">Take a photo of today's handwritten menu or upload an image file</p>
+                        <div class="instructions-box">
+                            💡 Tip: Make sure the menu is well-lit and clearly visible for best results.
+                        </div>
+
+                        <div class="camera-section">
+                            <div class="camera-preview">
+                                <video id="videoElement" autoplay playsinline></video>
+                            </div>
+                            <div class="camera-actions">
+                                <button class="btn btn--primary" id="btnCapture">📷 Capture Photo</button>
+                                <button class="btn btn--outline" id="btnUploadFile">📁 Upload File</button>
+                                <input type="file" id="fileInput" class="file-input" accept="image/*" style="display:none;">
+                            </div>
+                            <p id="cameraStatus" class="text-small text-muted" style="margin-top:0.75rem;">Initializing camera...</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Review Items -->
+                    <div class="card">
+                        <div class="card__header">
+                            <span style="font-size:1.25rem;">✏️</span>
+                            <h3>Review & Edit Detected Items</h3>
+                        </div>
+                        <p class="text-muted" style="margin-bottom:1rem;">AI will extract menu items from the image. Review and edit as needed.</p>
+
+                        <div id="menuItemsContainer">
+                            <div class="loading">
+                                <div class="spinner"></div>
+                                <p>Waiting for menu items...</p>
+                            </div>
+                        </div>
+
+                        <button class="btn btn--primary btn--block" id="btnPublish" style="display:none; margin-top:1rem;">
+                            📢 Publish Menu
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="camera-container">
-            <video id="videoElement" autoplay playsinline></video>
-            <div>
-                <button class="btn-camera" id="btnCapture">Capture Photo</button>
-                <button class="btn-camera" id="btnUploadFile">Upload File</button>
-                <input type="file" id="fileInput" class="file-input" accept="image/*">
-            </div>
-            <div id="cameraStatus"></div>
-        </div>
-
-        <div class="card">
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Review & Edit Detected Items</h3>
-                    <p>AI will extract menu items. Review and edit as needed.</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="menuItemsContainer" class="menu-items-grid">
-            <!-- Menu item cards will be inserted here -->
-        </div>
-
-        <button class="btn-publish" id="btnPublish">Publish Menu</button>
     </div>
 
     <script type="module" src="./js/camera.js"></script>

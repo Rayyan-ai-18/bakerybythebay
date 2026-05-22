@@ -30,6 +30,9 @@ window.addToCart = function(itemId, name, price) {
 
     saveCart(cart);
     updateCartUI();
+
+    // Show cart drawer briefly as feedback
+    openCartDrawer();
 };
 
 // Remove item from cart
@@ -68,6 +71,22 @@ function getCartTotal() {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 }
 
+// Open cart drawer
+function openCartDrawer() {
+    const drawer = document.getElementById('cartDrawer');
+    const overlay = document.getElementById('cartDrawerOverlay');
+    if (drawer) drawer.classList.add('open');
+    if (overlay) overlay.classList.add('open');
+}
+
+// Close cart drawer
+function closeCartDrawer() {
+    const drawer = document.getElementById('cartDrawer');
+    const overlay = document.getElementById('cartDrawerOverlay');
+    if (drawer) drawer.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+}
+
 // Update cart UI (called when cart changes)
 function updateCartUI() {
     // Update cart badge in floating button
@@ -75,8 +94,14 @@ function updateCartUI() {
     if (cartCount) {
         const count = getCartItemCount();
         cartCount.textContent = count;
-        // Hide badge if empty
-        cartCount.style.display = count > 0 ? 'block' : 'none';
+        cartCount.style.display = count > 0 ? 'flex' : 'none';
+    }
+
+    // Update cart count in header
+    const cartCountSmall = document.getElementById('cartCountSmall');
+    if (cartCountSmall) {
+        const count = getCartItemCount();
+        cartCountSmall.textContent = count;
     }
 
     // Update cart total in drawer
@@ -90,17 +115,27 @@ function updateCartUI() {
     if (cartItemsContainer) {
         const cart = getCart();
         if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p class="empty-cart">Your cart is empty</p>';
+            cartItemsContainer.innerHTML = `
+                <div class="empty-cart">
+                    <div class="empty-cart-icon">🛒</div>
+                    <p>Your cart is empty</p>
+                    <p class="text-small text-muted">Add items from the menu to get started</p>
+                </div>
+            `;
         } else {
-            cartItemsContainer.innerHTML = cart.map(item => `
-                <div class="cart-item">
+            cartItemsContainer.innerHTML = cart.map((item, idx) => `
+                <div class="cart-item" data-item-idx="${idx}">
                     <div class="cart-item-info">
                         <span class="cart-item-name">${item.name}</span>
-                        <span class="cart-item-quantity">×${item.quantity}</span>
+                        <div class="cart-item-controls">
+                            <button class="cart-item-qty-btn" onclick="window.updateCartQuantity('${item.id}', ${item.quantity - 1})">−</button>
+                            <span class="cart-item-qty">${item.quantity}</span>
+                            <button class="cart-item-qty-btn" onclick="window.updateCartQuantity('${item.id}', ${item.quantity + 1})">+</button>
+                        </div>
                     </div>
-                    <div>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
                         <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
-                        <button class="cart-item-remove" onclick="removeFromCart(${item.id})">×</button>
+                        <button class="cart-item-remove" onclick="window.removeFromCart('${item.id}')" title="Remove">✕</button>
                     </div>
                 </div>
             `).join('');
@@ -108,8 +143,37 @@ function updateCartUI() {
     }
 }
 
-// Initialize cart UI on page load
-document.addEventListener('DOMContentLoaded', updateCartUI);
+// Initialize cart UI and event listeners on page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateCartUI();
+
+    // Cart toggle button
+    const cartToggle = document.getElementById('cartToggle');
+    if (cartToggle) {
+        cartToggle.addEventListener('click', openCartDrawer);
+    }
+
+    // Cart close button
+    const cartDrawerClose = document.getElementById('cartDrawerClose');
+    if (cartDrawerClose) {
+        cartDrawerClose.addEventListener('click', closeCartDrawer);
+    }
+
+    // Overlay click to close
+    const overlay = document.getElementById('cartDrawerOverlay');
+    if (overlay) {
+        overlay.addEventListener('click', closeCartDrawer);
+    }
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+    }
+});
 
 // Also update cart UI when storage changes (for other tabs)
 window.addEventListener('storage', (e) => {
@@ -118,6 +182,7 @@ window.addEventListener('storage', (e) => {
     }
 });
 
-// Make functions globally available (for use in menu.js)
+// Make functions globally available (for use in menu.js and checkout.js)
 window.getCart = getCart;
 window.saveCart = saveCart;
+window.getCartTotal = getCartTotal;

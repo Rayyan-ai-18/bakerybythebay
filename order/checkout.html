@@ -7,54 +7,100 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div class="container">
-        <a href="../menu/index.html" class="btn-back">← Back to Menu</a>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="header__logo">
+                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay" style="height:36px;width:auto;">
+                <div>
+                    <div class="header__logo-text">Bakery by the Bay</div>
+                    <div class="header__logo-tagline">Artisan Bakery</div>
+                </div>
+            </a>
+            <button class="header__toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <ul class="header__nav" id="navLinks">
+                <li><a href="/" class="header__nav-link">Home</a></li>
+                <li><a href="/menu/" class="header__nav-link">Today's Menu</a></li>
+                <li><a href="/feedback/" class="header__nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-        <section class="checkout-container">
-            <div class="checkout-form">
-                <h1>Place Your Order</h1>
-                <p>Enter your name and phone number to place an order. We'll have it ready for pickup.</p>
+    <div class="checkout-page">
+        <a href="/menu/" class="btn-back">← Back to Menu</a>
 
-                <div id="error-message" class="error-message"></div>
-                <div id="success-message" class="success-message"></div>
+        <div class="checkout-header">
+            <h1>Place Your Order</h1>
+            <p>Enter your details and we'll have it ready for pickup</p>
+        </div>
 
-                <!-- Order Summary -->
-                <div class="order-summary">
-                    <h3>Your Order</h3>
-                    <div id="orderSummary">
-                        <!-- Order items will be inserted here -->
-                        <p class="empty-summary">Your cart is empty</p>
-                    </div>
-                    <div class="order-total">
-                        <span class="order-total-label">Total:</span>
-                        <span class="order-total-value" id="orderTotal">$0.00</span>
-                    </div>
+        <div class="checkout-form-card">
+            <div id="error-message" class="message message--error"></div>
+            <div id="success-message" class="message message--success"></div>
+
+            <div class="order-summary-card">
+                <h3>📋 Your Order</h3>
+                <div id="orderSummary">
+                    <p class="text-muted">Your cart is empty</p>
+                </div>
+                <div class="order-total-row">
+                    <span class="order-total-label">Total</span>
+                    <span class="order-total-value" id="orderTotal">$0.00</span>
+                </div>
+            </div>
+
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label class="form-label" for="customerName">Name</label>
+                    <input class="form-input" type="text" id="customerName" placeholder="Your name" required>
                 </div>
 
-                <!-- Checkout Form -->
-                <form id="checkoutForm">
-                    <div class="input-group">
-                        <label for="customerName">Name</label>
-                        <input type="text" id="customerName" placeholder="Your name" required>
-                    </div>
+                <div class="form-group">
+                    <label class="form-label" for="customerPhone">Phone Number</label>
+                    <input class="form-input" type="tel" id="customerPhone" placeholder="Your phone number" required>
+                </div>
 
-                    <div class="input-group">
-                        <label for="customerPhone">Phone Number</label>
-                        <input type="tel" id="customerPhone" placeholder="Your phone number" required>
-                    </div>
+                <button type="submit" class="btn btn--primary btn--lg btn--block">
+                    Place Order →
+                </button>
+            </form>
 
-                    <button type="submit" class="btn btn-success btn-place-order">
-                        Place Order
-                    </button>
-                </form>
-
-                <p class="checkout-note">
-                    Note: Payment will be made in person at the bakery. No online payment required.
-                </p>
+            <div class="checkout-note">
+                💡 Payment will be made in person at the bakery. No online payment required.
             </div>
-        </section>
+        </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <h3>🥐 Bakery by the Bay</h3>
+                <p>An artisan bakery serving fresh, handcrafted pastries, breads, and treats daily. Baked with love in our seaside kitchen.</p>
+            </div>
+            <div class="footer__links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/menu/">Today's Menu</a></li>
+                    <li><a href="/order/checkout.html">Place Order</a></li>
+                    <li><a href="/feedback/">Give Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer__links">
+                <h4>Admin</h4>
+                <ul>
+                    <li><a href="/admin/">Staff Login</a></li>
+                    <li><a href="/admin/dashboard.html">Dashboard</a></li>
+                    <li><a href="/admin/menu-upload.html">Upload Menu</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            &copy; 2026 Bakery by the Bay. All rights reserved.
+        </div>
+    </footer>
+
+    <script type="module" src="../menu/js/cart.js"></script>
     <script type="module" src="./js/checkout.js"></script>
 </body>
 </html>

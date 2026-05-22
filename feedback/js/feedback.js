@@ -9,9 +9,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedbackPhoneInput = document.getElementById('feedbackPhone');
     const feedbackMessageInput = document.getElementById('feedbackMessage');
     const feedbackRatingValueInput = document.getElementById('feedbackRatingValue');
-    const ratingStars = document.querySelectorAll('.rating-stars .star');
+    const ratingStars = document.querySelectorAll('.star');
 
     if (!feedbackForm) return;
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+    }
+
+    // Helper to show message
+    function showMessage(element, text) {
+        element.textContent = text;
+        element.classList.add('show');
+    }
+
+    // Helper to hide messages
+    function hideMessages() {
+        errorMessage.classList.remove('show');
+        successMessage.classList.remove('show');
+    }
 
     // Handle star rating clicks
     let selectedRating = 0;
@@ -19,24 +40,45 @@ document.addEventListener('DOMContentLoaded', () => {
         star.addEventListener('click', () => {
             const rating = parseInt(star.dataset.rating);
             selectedRating = rating;
-            // Update UI
+
+            // Update UI using active class
             ratingStars.forEach(s => {
                 if (parseInt(s.dataset.rating) <= rating) {
-                    s.style.color = '#ff6b6b'; // filled star color
+                    s.classList.add('active');
                 } else {
-                    s.style.color = '#ccc'; // empty star color
+                    s.classList.remove('active');
                 }
             });
             feedbackRatingValueInput.value = rating;
+        });
+
+        // Hover effects
+        star.addEventListener('mouseenter', () => {
+            const rating = parseInt(star.dataset.rating);
+            ratingStars.forEach(s => {
+                if (parseInt(s.dataset.rating) <= rating) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        });
+
+        star.addEventListener('mouseleave', () => {
+            ratingStars.forEach(s => {
+                if (parseInt(s.dataset.rating) <= selectedRating) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
         });
     });
 
     // Handle form submission
     feedbackForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        // Clear messages
-        errorMessage.style.display = 'none';
-        successMessage.style.display = 'none';
+        hideMessages();
 
         const name = feedbackNameInput.value.trim();
         const phone = feedbackPhoneInput.value.trim();
@@ -45,8 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Validate
         if (!message) {
-            errorMessage.textContent = 'Please enter a message';
-            errorMessage.style.display = 'block';
+            showMessage(errorMessage, 'Please enter a message');
             return;
         }
 
@@ -69,24 +110,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
 
             // Show success message
-            successMessage.textContent = 'Thank you for your feedback!';
-            successMessage.style.display = 'block';
+            showMessage(successMessage, 'Thank you for your feedback! 🎉');
 
             // Reset form
             feedbackForm.reset();
             ratingStars.forEach(star => {
-                star.style.color = '#ccc';
+                star.classList.remove('active');
             });
             selectedRating = 0;
             feedbackRatingValueInput.value = '';
+
+            // Auto-hide success message after 4 seconds
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 4000);
         } catch (err) {
             console.error('Feedback error:', err);
-            errorMessage.textContent = 'Failed to send feedback. Please try again.';
-            errorMessage.style.display = 'block';
+            showMessage(errorMessage, 'Failed to send feedback. Please try again.');
         } finally {
             // Re-enable button
             submitButton.disabled = false;
-            submitButton.textContent = 'Send Feedback';
+            submitButton.textContent = 'Send Feedback →';
         }
     });
 });

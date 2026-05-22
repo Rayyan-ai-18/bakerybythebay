@@ -7,62 +7,113 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <!-- Header (we'll use the same style as existing site, but for now simple) -->
-    <header>
-        <div class="container">
-            <h1>Bakery by the Bay</h1>
-            <p>Today's Fresh Menu</p>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="header__logo">
+                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay" style="height:36px;width:auto;">
+                <div>
+                    <div class="header__logo-text">Bakery by the Bay</div>
+                    <div class="header__logo-tagline">Artisan Bakery</div>
+                </div>
+            </a>
+            <button class="header__toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <ul class="header__nav" id="navLinks">
+                <li><a href="/" class="header__nav-link">Home</a></li>
+                <li><a href="/menu/" class="header__nav-link header__nav-link--active">Today's Menu</a></li>
+                <li><a href="/feedback/" class="header__nav-link">Contact</a></li>
+                <li>
+                    <button class="header__cart-btn" id="cartToggle" aria-label="Open cart">
+                        🛒 <span id="cartCountSmall">0</span>
+                    </button>
+                </li>
+            </ul>
         </div>
     </header>
 
-    <main>
-        <div class="container">
-            <!-- Menu Header -->
-            <section class="menu-header">
-                <h1>Today's Menu</h1>
-                <p>Available items for <span id="menuDate"></span></p>
-            </section>
+    <!-- Hero -->
+    <section class="menu-hero">
+        <h1>Today's Menu</h1>
+        <p>Handcrafted daily with the finest ingredients</p>
+        <div class="menu-date">📅 <span id="menuDate"></span></div>
+    </section>
 
-            <!-- Category Filter -->
-            <div class="menu-categories" id="menuCategories">
-                <!-- Category buttons will be inserted here -->
-                <button class="menu-category-btn active" data-category="all">All</button>
-            </div>
-
-            <!-- Menu Items Grid -->
-            <section class="menu-items-grid" id="menuItemsGrid">
-                <!-- Menu items will be inserted here -->
-                <div class="loading">Loading menu...</div>
-            </section>
+    <main class="container">
+        <!-- Category Filter -->
+        <div class="menu-categories" id="menuCategories">
+            <button class="menu-category-btn active" data-category="all">All</button>
         </div>
+
+        <!-- Menu Items Grid -->
+        <section class="menu-items-grid" id="menuItemsGrid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading today's menu...</p>
+            </div>
+        </section>
     </main>
+
+    <!-- Cart Drawer Overlay -->
+    <div class="cart-drawer-overlay" id="cartDrawerOverlay"></div>
 
     <!-- Cart Drawer -->
     <div class="cart-drawer" id="cartDrawer">
         <div class="cart-drawer-header">
             <h2>Your Cart</h2>
-            <button class="cart-drawer-close" id="cartDrawerClose">×</button>
+            <button class="cart-drawer-close" id="cartDrawerClose">✕</button>
         </div>
         <div class="cart-items" id="cartItems">
-            <!-- Cart items will be inserted here -->
-            <p class="empty-cart">Your cart is empty</p>
+            <div class="empty-state">
+                <div class="empty-state__icon">🛒</div>
+                <p>Your cart is empty</p>
+                <p class="text-small text-muted">Add items from the menu to get started</p>
+            </div>
         </div>
         <div class="cart-footer">
-            <div class="cart-total">
-                <span class="cart-total-label">Total:</span>
+            <div class="cart-total-row">
+                <span class="cart-total-label">Total</span>
                 <span class="cart-total-value" id="cartTotal">$0.00</span>
             </div>
-            <a href="/order/checkout.html" class="btn-checkout" id="btnCheckout">Checkout</a>
+            <a href="/order/checkout.html" class="btn-checkout" id="btnCheckout">
+                Proceed to Checkout →
+            </a>
         </div>
     </div>
 
     <!-- Floating Cart Button -->
-    <button class="btn cart-toggle" id="cartToggle">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15.55 8.55L15.55 8.55C16 8 16.73 8 17.18 8.55L21 12.45C21.41 12.86 21.41 13.56 21 13.97L21 13.97C20.59 14.38 19.86 14.38 19.45 13.97L15.55 10.07V17.5C15.55 18.32 14.93 18.94 14.11 18.94H9.89C9.07 18.94 8.45 18.32 8.45 17.5V10.07L4.55 13.97C4.14 13.56 4.14 12.86 4.55 12.45L8.45 8.55C8.9 8 9.63 8 10.08 8.55L10.08 8.55H15.55Z" fill="white"/>
-        </svg>
-        <span id="cartCount" class="cart-badge">0</span>
+    <button class="cart-toggle" id="cartToggleFloat" aria-label="Open cart">
+        🛒
+        <span class="cart-badge" id="cartCount" style="display:none">0</span>
     </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <h3>🥐 Bakery by the Bay</h3>
+                <p>An artisan bakery serving fresh, handcrafted pastries, breads, and treats daily. Baked with love in our seaside kitchen.</p>
+            </div>
+            <div class="footer__links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/menu/">Today's Menu</a></li>
+                    <li><a href="/order/checkout.html">Place Order</a></li>
+                    <li><a href="/feedback/">Give Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer__links">
+                <h4>Admin</h4>
+                <ul>
+                    <li><a href="/admin/">Staff Login</a></li>
+                    <li><a href="/admin/dashboard.html">Dashboard</a></li>
+                    <li><a href="/admin/menu-upload.html">Upload Menu</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            &copy; 2026 Bakery by the Bay. All rights reserved.
+        </div>
+    </footer>
 
     <script type="module" src="./js/menu.js"></script>
     <script type="module" src="./js/cart.js"></script>

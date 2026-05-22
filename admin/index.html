@@ -5,95 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bakery by the Bay - Admin Login</title>
     <link rel="stylesheet" href="../styles.css">
-    <style>
-        .login-container {
-            max-width: 400px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .form-group label {
-            font-weight: 600;
-            color: #333;
-        }
-        .form-group input {
-            padding: 0.75rem;
-            border: 2px solid #eee;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: #ff6b6b;
-        }
-        .btn-submit {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .btn-submit:hover {
-            background: #ff5252;
-        }
-        .login-logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .login-logo h1 {
-            color: #ff6b6b;
-            font-size: 2rem;
-            margin: 0;
-        }
-        .error-message {
-            background: #fee;
-            color: #c33;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid #f55;
-            display: none;
-        }
-    </style>
 </head>
 <body>
-    <!-- Include header from existing site if available -->
-    <div class="login-container">
-        <div class="login-logo">
-            <h1>Bakery Admin</h1>
-        </div>
-
-        <div id="error-message" class="error-message">
-            Invalid email or password
-        </div>
-
-        <form class="login-form" id="loginForm">
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" placeholder="owner@bakerybythebay.com" required>
+    <div class="admin-login-page">
+        <div class="login-card animate-fade-in-up">
+            <div class="login-logo">
+                <div class="login-logo-icon">🔒</div>
+                <h1>Bakery Admin</h1>
+                <p>Sign in to manage your bakery</p>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="••••••••" required>
-            </div>
-            <button type="submit" class="btn-submit">Login to Dashboard</button>
-        </form>
+
+            <div id="error-message" class="message message--error"></div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input class="form-input" type="email" id="email" placeholder="owner@bakerybythebay.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input class="form-input" type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn--primary btn--lg btn--block">Login to Dashboard</button>
+            </form>
+        </div>
     </div>
 
     <script type="module" src="./js/admin-auth.js"></script>

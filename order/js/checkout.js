@@ -12,24 +12,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!orderSummary || !orderTotal || !checkoutForm) return;
 
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+    }
+
     // Helper to show error message
     function showError(message) {
         errorMessage.textContent = message;
-        errorMessage.style.display = 'block';
-        successMessage.style.display = 'none';
+        errorMessage.classList.add('show');
+        successMessage.classList.remove('show');
     }
 
     // Helper to show success message
     function showSuccess(message) {
         successMessage.textContent = message;
-        successMessage.style.display = 'block';
-        errorMessage.style.display = 'none';
+        successMessage.classList.add('show');
+        errorMessage.classList.remove('show');
     }
 
     // Helper to hide messages
     function hideMessages() {
-        errorMessage.style.display = 'none';
-        successMessage.style.display = 'none';
+        errorMessage.classList.remove('show');
+        successMessage.classList.remove('show');
     }
 
     // Load cart and display order summary
@@ -38,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const cart = window.getCart ? window.getCart() : [];
 
         if (cart.length === 0) {
-            orderSummary.innerHTML = '<p class="empty-summary">Your cart is empty</p>';
+            orderSummary.innerHTML = '<p class="text-muted">Your cart is empty</p>';
             orderTotal.textContent = '$0.00';
             return;
         }
@@ -46,8 +55,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Build order summary HTML
         const summaryHTML = cart.map(item => `
             <div class="order-item">
-                <span>${item.name} (×${item.quantity})</span>
-                <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                <span class="order-item-name">${item.name}</span>
+                <span class="order-item-qty">×${item.quantity}</span>
+                <span class="order-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
             </div>
         `).join('');
 
@@ -130,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } finally {
             // Re-enable button
             submitButton.disabled = false;
-            submitButton.textContent = 'Place Order';
+            submitButton.textContent = 'Place Order →';
         }
     });
 });

@@ -11,6 +11,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     let allMenuItems = [];
     let currentCategory = 'all';
 
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+    }
+
     // Format date
     function formatDate(dateString) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -19,7 +28,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Load menu from Supabase
     async function loadMenu() {
-        if (menuItemsGrid) menuItemsGrid.innerHTML = '<div class="loading">Loading menu...</div>';
+        if (menuItemsGrid) {
+            menuItemsGrid.innerHTML = `
+                <div class="loading" style="grid-column:1/-1;">
+                    <div class="spinner"></div>
+                    <p>Loading today's menu...</p>
+                </div>
+            `;
+        }
 
         try {
             // Get today's published menu
@@ -30,16 +46,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .select('*, menu_items(*)')
                 .eq('date', today)
                 .eq('published', true)
-                .single();
+                .maybeSingle();
 
             if (error && error.code !== 'PGRST116') { // PGRST116 means no rows returned
                 console.error('Error loading menu:', error);
-                if (menuItemsGrid) menuItemsGrid.innerHTML = '<div class="error">Failed to load menu</div>';
+                if (menuItemsGrid) menuItemsGrid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">⚠️</div><h3>Failed to load menu</h3><p>Please try again later</p></div>';
                 return;
             }
 
             if (!data || !data.menu_items || data.menu_items.length === 0) {
-                if (menuItemsGrid) menuItemsGrid.innerHTML = '<div class="no-menu">No menu available today</div>';
+                if (menuItemsGrid) {
+                    menuItemsGrid.innerHTML = `
+                        <div class="empty-state" style="grid-column:1/-1;">
+                            <div class="empty-state-icon">📋</div>
+                            <h3>No menu available today</h3>
+                            <p>Check back later for today's fresh offerings</p>
+                        </div>
+                    `;
+                }
                 if (menuDate) menuDate.textContent = '';
                 if (menuCategories) menuCategories.innerHTML = '<button class="menu-category-btn active" data-category="all">All</button>';
                 return;
@@ -58,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderMenuItems();
         } catch (err) {
             console.error('Error in loadMenu:', err);
-            if (menuItemsGrid) menuItemsGrid.innerHTML = '<div class="error">Failed to load menu</div>';
+            if (menuItemsGrid) menuItemsGrid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">⚠️</div><h3>Failed to load menu</h3><p>Please try again later</p></div>';
         }
     }
 
@@ -105,20 +129,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (filteredItems.length === 0) {
-            menuItemsGrid.innerHTML = '<div class="no-items">No items in this category</div>';
+            menuItemsGrid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">🔍</div><h3>No items in this category</h3></div>';
             return;
         }
 
-        // Build grid
-        menuItemsGrid.innerHTML = filteredItems.map(item => `
-            <div class="menu-item-card">
+        // Build grid with new card design
+        menuItemsGrid.innerHTML = filteredItems.map((item, idx) => `
+            <div class="menu-item-card animate-fade-in-up" style="animation-delay:${idx * 0.05}s">
+                <div class="item-category">${item.category}</div>
                 <h3>${item.name}</h3>
-                <div class="price">$${parseFloat(item.price).toFixed(2)}</div>
-                <div class="category">${item.category}</div>
-                ${item.description ? `<p class="description">${item.description}</p>` : ''}
-                <button class="add-to-cart" data-item-id="${item.item_id}" data-name="${item.name}" data-price="${item.price}">
-                    Add to Cart
-                </button>
+                ${item.description ? `<p class="item-description">${item.description}</p>` : ''}
+                <div class="item-footer">
+                    <span class="item-price">$${parseFloat(item.price).toFixed(2)}</span>
+                    <button class="add-to-cart" data-item-id="${item.item_id}" data-name="${item.name}" data-price="${item.price}">
+                        + Add
+                    </button>
+                </div>
             </div>
         `).join('');
 

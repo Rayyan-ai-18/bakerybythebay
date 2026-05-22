@@ -3,60 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery by the Bay - Feedback</title>
+    <title>Bakery by the Bay - Contact & Feedback</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div class="container">
-        <a href="../menu/index.html" class="btn-back">← Back to Menu</a>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="header__logo">
+                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay" style="height:36px;width:auto;">
+                <div>
+                    <div class="header__logo-text">Bakery by the Bay</div>
+                    <div class="header__logo-tagline">Artisan Bakery</div>
+                </div>
+            </a>
+            <button class="header__toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <ul class="header__nav" id="navLinks">
+                <li><a href="/" class="header__nav-link">Home</a></li>
+                <li><a href="/menu/" class="header__nav-link">Today's Menu</a></li>
+                <li><a href="/feedback/" class="header__nav-link header__nav-link--active">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-        <section class="feedback-container">
-            <div class="feedback-form">
-                <h1>We'd Love to Hear From You!</h1>
-                <p>Your feedback helps us improve our bakery and services.</p>
+    <div class="feedback-page">
+        <div class="feedback-header">
+            <h1>Share Your Feedback</h1>
+            <p>We'd love to hear about your experience at Bakery by the Bay</p>
+        </div>
 
-                <div id="error-message" class="error-message"></div>
-                <div id="success-message" class="success-message"></div>
+        <div class="feedback-form-card">
+            <div id="error-message" class="message message--error"></div>
+            <div id="success-message" class="message message--success"></div>
 
-                <form id="feedbackForm">
-                    <div class="input-group">
-                        <label for="feedbackName">Name (optional)</label>
-                        <input type="text" id="feedbackName" placeholder="Your name">
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label class="form-label" for="feedbackName">Name</label>
+                    <input class="form-input" type="text" id="feedbackName" placeholder="Your name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="feedbackPhone">Phone Number</label>
+                    <input class="form-input" type="tel" id="feedbackPhone" placeholder="Your phone number" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Rating</label>
+                    <div class="rating-stars" id="ratingStars">
+                        <span class="star" data-rating="5">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="1">★</span>
                     </div>
+                    <input type="hidden" id="feedbackRatingValue" value="0">
+                </div>
 
-                    <div class="input-group">
-                        <label for="feedbackPhone">Phone (optional)</label>
-                        <input type="tel" id="feedbackPhone" placeholder="Your phone number">
-                    </div>
+                <div class="form-group">
+                    <label class="form-label" for="feedbackMessage">Message</label>
+                    <textarea class="form-textarea" id="feedbackMessage" placeholder="Tell us about your experience..." rows="4" required></textarea>
+                </div>
 
-                    <div class="input-group">
-                        <label for="feedbackMessage">Message</label>
-                        <textarea id="feedbackMessage" rows="5" placeholder="What did you think of our bakery today?" required></textarea>
-                    </div>
+                <button type="submit" class="btn btn--primary btn--block btn--lg">Submit Feedback</button>
+            </form>
 
-                    <div class="input-group">
-                        <label for="feedbackRating">Rating (optional)</label>
-                        <div class="rating-stars">
-                            <span class="star" data-rating="1">★</span>
-                            <span class="star" data-rating="2">★</span>
-                            <span class="star" data-rating="3">★</span>
-                            <span class="star" data-rating="4">★</span>
-                            <span class="star" data-rating="5">★</span>
-                        </div>
-                        <input type="hidden" id="feedbackRatingValue" value="">
-                    </div>
-
-                    <button type="submit" class="btn btn-success btn-submit-feedback">
-                        Send Feedback
-                    </button>
-                </form>
-
-                <p class="feedback-note">
-                    Note: Feedback is anonymous unless you provide your name or phone number.
-                </p>
+            <div class="feedback-note">
+                Your feedback helps us improve and serve you better. Thank you!
             </div>
-        </section>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <h3>🥐 Bakery by the Bay</h3>
+                <p>An artisan bakery serving fresh, handcrafted pastries, breads, and treats daily. Baked with love in our seaside kitchen.</p>
+            </div>
+            <div class="footer__links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/menu/">Today's Menu</a></li>
+                    <li><a href="/order/checkout.html">Place Order</a></li>
+                    <li><a href="/feedback/">Give Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer__links">
+                <h4>Admin</h4>
+                <ul>
+                    <li><a href="/admin/">Staff Login</a></li>
+                    <li><a href="/admin/dashboard.html">Dashboard</a></li>
+                    <li><a href="/admin/menu-upload.html">Upload Menu</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            &copy; 2026 Bakery by the Bay. All rights reserved.
+        </div>
+    </footer>
 
     <script type="module" src="./js/feedback.js"></script>
 </body>

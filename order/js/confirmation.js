@@ -11,24 +11,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!bookingIdElement || !copyButton || !orderItemsElement || !orderTotalElement) return;
 
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+    }
+
     // Helper to show error message
     function showError(message) {
         errorMessage.textContent = message;
-        errorMessage.style.display = 'block';
-        successMessage.style.display = 'none';
+        errorMessage.classList.add('show');
+        successMessage.classList.remove('show');
     }
 
     // Helper to show success message
     function showSuccess(message) {
         successMessage.textContent = message;
-        successMessage.style.display = 'block';
-        errorMessage.style.display = 'none';
+        successMessage.classList.add('show');
+        errorMessage.classList.remove('show');
     }
 
     // Helper to hide messages
     function hideMessages() {
-        errorMessage.style.display = 'none';
-        successMessage.style.display = 'none';
+        errorMessage.classList.remove('show');
+        successMessage.classList.remove('show');
     }
 
     // Get booking ID from URL query parameter
@@ -83,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </li>
                 `).join('');
             } else {
-                orderItemsElement.innerHTML = '<li><em>No items found</em></li>';
+                orderItemsElement.innerHTML = '<li style="color:var(--color-muted-text);font-style:italic;">No items found</li>';
             }
 
             // Display total

@@ -3,50 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery by the Bay</title>
-    <meta http-equiv="refresh" content="0; url=menu/">
+    <title>Bakery by the Bay - Artisan Bakery</title>
+    <meta name="description" content="Freshly baked goods made with love. Visit our Collingwood or Stayner locations.">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .landing-page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            flex-direction: column;
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, #fff5f5 0%, #fff 50%, #fff5f5 100%);
-        }
-        .landing-page h1 {
-            color: var(--primary);
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .landing-page p {
-            color: var(--text-light);
-            font-size: 1.125rem;
-            margin-bottom: 1rem;
-        }
-        .landing-page .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 1rem;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
 </head>
 <body>
-    <div class="landing-page">
-        <div class="spinner"></div>
-        <h1>Bakery by the Bay</h1>
-        <p>Loading today's menu...</p>
-        <a href="menu/" class="btn">Go to Menu</a>
-    </div>
+    <!-- Header / Navigation -->
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="header__logo">
+                <img src="assets/images/logo-icon.png" alt="Bakery by the Bay" style="height:36px;width:auto;">
+                <div>
+                    <div class="header__logo-text">Bakery by the Bay</div>
+                    <div class="header__logo-tagline">Artisan Bakery</div>
+                </div>
+            </a>
+            <button class="header__toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <ul class="header__nav" id="navLinks">
+                <li><a href="/" class="header__nav-link header__nav-link--active">Home</a></li>
+                <li><a href="/menu/" class="header__nav-link">Today's Menu</a></li>
+                <li><a href="/feedback/" class="header__nav-link">Contact</a></li>
+                <li>
+                    <button class="header__cart-btn" id="cartToggle" aria-label="Open cart">
+                        🛒 <span id="cartCountSmall">0</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <img 
+                src="assets/images/fruit-pies-hero.png" 
+                alt="Fresh fruit pies and baked goods" 
+                class="hero__image"
+                loading="eager"
+            >
+            <div class="hero__overlay"></div>
+            <div class="hero__content">
+                <h1>Bakery by the Bay</h1>
+                <p>Freshly baked goods made with love. Handcrafted daily using the finest ingredients.</p>
+                <a href="/menu/" class="btn btn--white btn--lg">View Today's Menu</a>
+            </div>
+        </section>
+
+        <!-- New This Season / Featured Products -->
+        <section class="section">
+            <div class="section__header">
+                <h2>New this season</h2>
+                <p>Fresh from our oven to your table</p>
+            </div>
+            <div class="product-grid" id="featuredProducts">
+                <!-- Product 1: Butter Tarts -->
+                <a href="/menu/" class="product-card">
+                    <div class="product-card__image">
+                        <img src="assets/images/butter-tarts.png" alt="Butter Tarts" loading="lazy">
+                    </div>
+                    <div class="product-card__info">
+                        <h3 class="product-card__title">Butter Tarts</h3>
+                        <p class="product-card__price">$3.75</p>
+                    </div>
+                </a>
+
+                <!-- Product 2: Cinnamon Buns -->
+                <a href="/menu/" class="product-card">
+                    <div class="product-card__image">
+                        <img src="assets/images/cinnamon-buns.png" alt="Cinnamon Buns" loading="lazy">
+                    </div>
+                    <div class="product-card__info">
+                        <h3 class="product-card__title">Cinnamon Buns</h3>
+                        <p class="product-card__price">$8.75</p>
+                    </div>
+                </a>
+
+                <!-- Product 3: Cookies -->
+                <a href="/menu/" class="product-card">
+                    <div class="product-card__image">
+                        <img src="assets/images/cookies.png" alt="Fresh Baked Cookies" loading="lazy">
+                    </div>
+                    <div class="product-card__info">
+                        <h3 class="product-card__title">Cookies</h3>
+                        <p class="product-card__price">$5.00</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- About Section: Meet the Duo -->
+        <section class="about-section">
+            <img 
+                src="assets/images/couple.webp" 
+                alt="Stacey and Steve Bowden - Owners of Bakery by the Bay" 
+                class="about-section__image"
+                loading="lazy"
+            >
+            <div class="about-section__content">
+                <p class="subtitle">Meet the Duo</p>
+                <h2>Stacey &amp; Steve</h2>
+                <p>
+                    What began as a home baking business has grown into two storefronts, 
+                    but our commitment to quality remains the same. Using recipes passed down 
+                    from Stacey's great-grandmother, we bake everything from scratch daily.
+                </p>
+                <p>
+                    From our family to yours — every tart, bun, and cookie is made with the 
+                    same love and care we put into our very first batch.
+                </p>
+                <a href="/menu/" class="btn btn--primary">View Our Menu</a>
+            </div>
+        </section>
+
+        <!-- Locations Section -->
+        <section class="section">
+            <div class="section__header">
+                <h2>Visit Us</h2>
+                <p>Two locations, same quality</p>
+            </div>
+            <div class="locations-grid">
+                <div class="location-card">
+                    <h3>Collingwood</h3>
+                    <p>123 Hurontario Street</p>
+                    <p>Collingwood, ON</p>
+                    <p style="margin-top:0.75rem;">📞 (705) 555-0123</p>
+                </div>
+                <div class="location-card">
+                    <h3>Stayner</h3>
+                    <p>456 Main Street</p>
+                    <p>Stayner, ON</p>
+                    <p style="margin-top:0.75rem;">📞 (705) 555-0456</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <h3>🥐 Bakery by the Bay</h3>
+                <p>An artisan bakery serving fresh, handcrafted pastries, breads, and treats daily. Baked with love in our seaside kitchen using recipes passed down through generations.</p>
+            </div>
+            <div class="footer__links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/menu/">Today's Menu</a></li>
+                    <li><a href="/order/checkout.html">Place Order</a></li>
+                    <li><a href="/feedback/">Give Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer__links">
+                <h4>Info</h4>
+                <ul>
+                    <li><a href="/feedback/">Contact Us</a></li>
+                    <li><a href="/admin/">Staff Login</a></li>
+                    <li><a href="/admin/dashboard.html">Dashboard</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            &copy; 2026 Bakery by the Bay. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="js/nav.js" defer></script>
 </body>
 </html>
