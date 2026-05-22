@@ -1,37 +1,28 @@
-// Import supabase client
-import { supabase } from '../../js/supabase-client.js';
+// Admin dashboard — uses adminSupabase with no persistent session
+import { adminSupabase, requireAuth, handleLogout } from './auth-guard.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Check if user is logged in (session)
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (!session) {
-    // No session, redirect to login
-    window.location.href = 'index.html';
-    return;
-  }
+  // Require authentication — redirects to login if no session
+  await requireAuth();
 
   // Set user info in UI
+  const {
+    data: { session },
+  } = await adminSupabase.auth.getSession();
   const userEmail = document.getElementById('userEmail');
   const userAvatar = document.getElementById('userAvatar');
-  if (userEmail) userEmail.textContent = session.user.email || '';
+  if (userEmail) userEmail.textContent = session?.user?.email || '';
   if (userAvatar) {
-    // If user has avatar metadata, use it, else default
     userAvatar.src =
-      session.user.user_meta_data && session.user.user_meta_data.avatar_url
-        ? session.user.user_meta_data.avatar_url
-        : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(session.user.email);
+      session?.user?.user_metadata?.avatar_url
+        ? session.user.user_metadata.avatar_url
+        : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(session?.user?.email || 'Admin');
   }
 
   // Logout button
   const btnLogout = document.getElementById('btnLogout');
   if (btnLogout) {
-    btnLogout.addEventListener('click', async () => {
-      await supabase.auth.signOut();
-      window.location.href = 'index.html';
-    });
+    btnLogout.addEventListener('click', handleLogout);
   }
 
   // Load today's orders (we'll filter by date, but for simplicity we'll get all pending/ready and sort by date)
@@ -50,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (ordersTableBody) ordersTableBody.innerHTML = '';
     if (ordersNoData) ordersNoData.style.display = 'none';
 
-    const { data, error } = await supabase
+    const { data, error } = await adminSupabase
       .from('orders')
       .select('*')
       .order('created_at', { ascending: false });
@@ -121,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Update status on change
       select.addEventListener('change', async () => {
         const newStatus = select.value;
-        const { error } = await supabase
+        const { error } = await adminSupabase
           .from('orders')
           .update({ status: newStatus })
           .eq('booking_id', order.booking_id);
@@ -162,7 +153,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (feedbackTableBody) feedbackTableBody.innerHTML = '';
     if (feedbackNoData) feedbackNoData.style.display = 'none';
 
-    const { data, error } = await supabase
+    const { data, error } = await adminSupabase
       .from('feedback')
       .select('*')
       .order('created_at', { ascending: false });
@@ -226,7 +217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Export feedback as CSV
   if (btnExportFeedback) {
     btnExportFeedback.addEventListener('click', async () => {
-      const { data, error } = await supabase
+      const { data, error } = await adminSupabase
         .from('feedback')
         .select('*')
         .order('created_at', { ascending: false });
@@ -273,7 +264,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ===== Realtime Subscriptions =====
   // Orders: insert, update, delete
-  const ordersChannel = supabase
+  const ordersChannel = adminSupabase
     .channel('orders-changes')
     .on(
       'postgres_changes',
@@ -286,7 +277,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     .subscribe();
 
   // Feedback: insert, update, delete
-  const feedbackChannel = supabase
+  const feedbackChannel = adminSupabase
     .channel('feedback-changes')
     .on(
       'postgres_changes',
@@ -299,7 +290,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Cleanup on page unload (optional, but good practice)
   window.addEventListener('beforeunload', () => {
-    supabase.removeChannel(ordersChannel);
-    supabase.removeChannel(feedbackChannel);
+    adminSupabase.removeChannel(ordersChannel);
+    adminSupabase.removeChannel(feedbackChannel);
   });
 });

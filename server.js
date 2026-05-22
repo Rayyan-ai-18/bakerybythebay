@@ -5,7 +5,7 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-app.use(express.json({ limit: '10mb' })); // for base64 image uploads
+app.use(express.json({ limit: '5mb' })); // reduced from 10mb - images are now compressed client-side
 
 // Supabase clients
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -41,19 +41,28 @@ app.post('/api/scan-menu', async (req, res) => {
       return res.status(400).json({ error: 'No image provided' });
     }
 
-    // Try models in fallback order - using known free/low-cost vision models
-    const models = [
+    // Try models in fallback order - prioritizing speed
+    const MODELS = [
       'qwen/qwen3-vl-8b-instruct',
       'qwen/qwen3-vl-32b-instruct',
       'nvidia/nemotron-nano-12b-v2-vl:free'
     ];
 
+    const TIMEOUT_MS = 28000; // 28 seconds per model
+
     let lastError = null;
-    for (const model of models) {
+    for (const model of MODELS) {
       try {
         console.log(`Trying model: ${model}`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => {
+          controller.abort();
+          console.log(`Model ${model} timed out after ${TIMEOUT_MS}ms`);
+        }, TIMEOUT_MS);
+
         const openrouterResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
           method: 'POST',
+          signal: controller.signal,
           headers: {
             'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
             'Content-Type': 'application/json'
@@ -72,9 +81,10 @@ app.post('/api/scan-menu', async (req, res) => {
                 }
               }]
             }],
-            max_tokens: 1000
+            max_tokens: 500 // Reduced from 1000 - faster generation
           })
         });
+        clearTimeout(timeoutId);
 
         console.log(`OpenRouter response status: ${openrouterResponse.status}`);
 

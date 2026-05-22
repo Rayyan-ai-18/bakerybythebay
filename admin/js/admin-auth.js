@@ -1,5 +1,5 @@
-// Import supabase client (we'll need to adjust path for admin folder)
-import { supabase } from '../../js/supabase-client.js';
+// Admin login — uses adminSupabase with no persistent session
+import { adminSupabase } from './auth-guard.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
@@ -16,15 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMessage.style.display = 'none';
 
         try {
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { data, error } = await adminSupabase.auth.signInWithPassword({
                 email: email,
                 password: password
             });
 
             if (error) throw error;
 
-            // Redirect to dashboard on successful login
-            window.location.href = 'dashboard.html';
+            // Pass session tokens via URL hash — cleared immediately on dashboard load
+            const { access_token, refresh_token } = data.session;
+            const hashParams = new URLSearchParams({ access_token, refresh_token });
+            window.location.replace(`dashboard.html#${hashParams.toString()}`);
         } catch (err) {
             console.error('Login error:', err);
             errorMessage.textContent = 'Invalid email or password';

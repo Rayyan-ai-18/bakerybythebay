@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     async function processMenuImage() {
         hideMessages();
 
-        // Get the captured image blob from camera.js
         const imageBlob = window.getCapturedImageBlob();
         if (!imageBlob) {
             showError('Please capture or upload an image first');
@@ -39,15 +38,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         btnPublish.disabled = true;
-        btnPublish.textContent = 'Processing...';
+
+        // Show a timed progress indicator
+        const startTime = Date.now();
+        btnPublish.textContent = 'Scanning menu...';
+
+        // Update the button text every 5 seconds to show progress
+        const progressInterval = setInterval(() => {
+            const elapsed = Math.round((Date.now() - startTime) / 1000);
+            const dots = '.'.repeat(((elapsed / 2) % 4) + 1);
+            if (elapsed < 30) {
+                btnPublish.textContent = `Scanning${dots} (${elapsed}s)`;
+            } else {
+                btnPublish.textContent = `Still working${dots} (${elapsed}s)`;
+            }
+        }, 2000);
 
         try {
-            // Convert blob to base64
             const base64Image = await blobToBase64(imageBlob);
 
-            // Call our scan-menu endpoint
+            // Client-side timeout: 60 seconds max (3 models × 28s = 84s server, but keep user wait reasonable)
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 60000);
+
             const response = await fetch('/api/scan-menu', {
                 method: 'POST',
+                signal: controller.signal,
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -55,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     imageBase64: base64Image
                 })
             });
+            clearTimeout(timeoutId);
 
             const result = await response.json();
 
@@ -62,10 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.error || 'Failed to process image');
             }
 
-            // Process the menu items
+            clearInterval(progressInterval);
+
             if (Array.isArray(result) && result.length > 0) {
                 renderMenuItems(result);
-                showSuccess(`Detected ${result.length} menu items. Review and edit as needed.`);
+                const elapsed = Math.round((Date.now() - startTime) / 1000);
+                showSuccess(`Found ${result.length} menu items in ${elapsed}s. Review and edit as needed.`);
                 btnPublish.disabled = false;
                 btnPublish.textContent = 'Publish Menu';
             } else {
@@ -74,8 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnPublish.textContent = 'Publish Menu';
             }
         } catch (err) {
+            clearInterval(progressInterval);
             console.error('OCR error:', err);
-            showError(err.message || 'An error occurred while processing the image');
+            if (err.name === 'AbortError') {
+                showError('Request timed out after 60 seconds. Please try again with a clearer image.');
+            } else {
+                showError(err.message || 'An error occurred while processing the image');
+            }
             btnPublish.disabled = false;
             btnPublish.textContent = 'Publish Menu';
         }
@@ -109,15 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="category">${item.category || 'Other'}</div>
                 <div class="menu-item-inputs">
                     <div class="form-group">
-                        <label for="name-${index}>Item Name</label>
+                        <label for="name-${index}">Item Name</label>
                         <input type="text" id="name-${index}" value="${item.name || ''}">
                     </div>
                     <div class="form-group">
-                        <label for="price-${index}>Price ($)</label>
+                        <label for="price-${index}">Price ($)</label>
                         <input type="number" id="price-${index}" step="0.01" min="0" value="${item.price || 0}">
                     </div>
                     <div class="form-group">
-                        <label for="category-${index}>Category</label>
+                        <label for="category-${index}">Category</label>
                         <input type="text" id="category-${index}" value="${item.category || ''}">
                     </div>
                     <div class="form-group">
