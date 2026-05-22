@@ -1,4 +1,3 @@
-
 # Bakery by the Bay — Final Build Plan
 
 ## What We Are Building
