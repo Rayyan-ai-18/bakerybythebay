@@ -28,3 +28,7 @@ test-results/
 
 # Shopify clone (reference only, not part of the app)
 bakerybythebay.myshopify.com/
+
+# Redacted/backup files
+PLAN.md.redacted
+PLAN.md.redacted.save
