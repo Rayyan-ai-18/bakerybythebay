@@ -252,10 +252,16 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`\n  🥐 Bakery by the Bay - API Server\n`);
-  console.log(`  → http://localhost:${PORT}/\n`);
-  console.log(`  Endpoints: /api/scan-menu, /api/publish-menu, /api/update-order-status, /api/health\n`);
-  console.log(`  Serving static files from ${__dirname}\n`);
-});
+// Export for Vercel serverless (works with @vercel/node)
+module.exports = app;
+
+// Local development server
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`\n  🥐 Bakery by the Bay - API Server\n`);
+    console.log(`  → http://localhost:${PORT}/\n`);
+    console.log(`  Endpoints: /api/scan-menu, /api/publish-menu, /api/update-order-status, /api/health\n`);
+    console.log(`  Serving static files from ${__dirname}\n`);
+  });
+}
