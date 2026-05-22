@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery by the Bay - Order Confirmation</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <a href="../menu/index.html" class="btn-back">← Back to Menu</a>
+
+        <section class="confirmation-container">
+            <div class="confirmation-box">
+                <h1>Order Confirmed!</h1>
+                <p>Thank you for your order. Please show this confirmation at the counter to pay and collect your items.</p>
+
+                <div id="error-message" class="error-message"></div>
+                <div id="success-message" class="success-message"></div>
+
+                <div class="booking-id" id="bookingId">BKR-2205-K7X2</div>
+                <button class="copy-btn" id="copyButton">Copy Booking ID</button>
+
+                <div class="items-list">
+                    <h3>Your Order</h3>
+                    <ul id="orderItems">
+                        <!-- Order items will be inserted here -->
+                    </ul>
+                </div>
+
+                <p class="total">
+                    Total: <span id="orderTotal">$0.00</span>
+                </p>
+
+                <p class="note">
+                    This booking ID is valid for today only. Please visit during business hours.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="./js/confirmation.js"></script>
+</body>
+</html>

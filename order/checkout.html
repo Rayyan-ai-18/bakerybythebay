@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery by the Bay - Checkout</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <a href="../menu/index.html" class="btn-back">← Back to Menu</a>
+
+        <section class="checkout-container">
+            <div class="checkout-form">
+                <h1>Place Your Order</h1>
+                <p>Enter your name and phone number to place an order. We'll have it ready for pickup.</p>
+
+                <div id="error-message" class="error-message"></div>
+                <div id="success-message" class="success-message"></div>
+
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3>Your Order</h3>
+                    <div id="orderSummary">
+                        <!-- Order items will be inserted here -->
+                        <p class="empty-summary">Your cart is empty</p>
+                    </div>
+                    <div class="order-total">
+                        <span class="order-total-label">Total:</span>
+                        <span class="order-total-value" id="orderTotal">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Checkout Form -->
+                <form id="checkoutForm">
+                    <div class="input-group">
+                        <label for="customerName">Name</label>
+                        <input type="text" id="customerName" placeholder="Your name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="customerPhone">Phone Number</label>
+                        <input type="tel" id="customerPhone" placeholder="Your phone number" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-place-order">
+                        Place Order
+                    </button>
+                </form>
+
+                <p class="checkout-note">
+                    Note: Payment will be made in person at the bakery. No online payment required.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="./js/checkout.js"></script>
+</body>
+</html>

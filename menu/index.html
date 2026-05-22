@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery by the Bay - Today's Menu</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <!-- Header (we'll use the same style as existing site, but for now simple) -->
+    <header>
+        <div class="container">
+            <h1>Bakery by the Bay</h1>
+            <p>Today's Fresh Menu</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Menu Header -->
+            <section class="menu-header">
+                <h1>Today's Menu</h1>
+                <p>Available items for <span id="menuDate"></span></p>
+            </section>
+
+            <!-- Category Filter -->
+            <div class="menu-categories" id="menuCategories">
+                <!-- Category buttons will be inserted here -->
+                <button class="menu-category-btn active" data-category="all">All</button>
+            </div>
+
+            <!-- Menu Items Grid -->
+            <section class="menu-items-grid" id="menuItemsGrid">
+                <!-- Menu items will be inserted here -->
+                <div class="loading">Loading menu...</div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Cart Drawer -->
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header">
+            <h2>Your Cart</h2>
+            <button class="cart-drawer-close" id="cartDrawerClose">×</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be inserted here -->
+            <p class="empty-cart">Your cart is empty</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span class="cart-total-label">Total:</span>
+                <span class="cart-total-value" id="cartTotal">$0.00</span>
+            </div>
+            <a href="/order/checkout.html" class="btn-checkout" id="btnCheckout">Checkout</a>
+        </div>
+    </div>
+
+    <!-- Floating Cart Button -->
+    <button class="btn cart-toggle" id="cartToggle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.55 8.55L15.55 8.55C16 8 16.73 8 17.18 8.55L21 12.45C21.41 12.86 21.41 13.56 21 13.97L21 13.97C20.59 14.38 19.86 14.38 19.45 13.97L15.55 10.07V17.5C15.55 18.32 14.93 18.94 14.11 18.94H9.89C9.07 18.94 8.45 18.32 8.45 17.5V10.07L4.55 13.97C4.14 13.56 4.14 12.86 4.55 12.45L8.45 8.55C8.9 8 9.63 8 10.08 8.55L10.08 8.55H15.55Z" fill="white"/>
+        </svg>
+        <span id="cartCount" class="cart-badge">0</span>
+    </button>
+
+    <script type="module" src="./js/menu.js"></script>
+    <script type="module" src="./js/cart.js"></script>
+</body>
+</html>
