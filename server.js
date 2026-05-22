@@ -15,8 +15,10 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey); // service role bypasses RLS
 const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey); // anon key for client-side
 
-// Serve static files
-app.use(express.static(path.join(__dirname)));
+// Serve static files (only needed for local development; Vercel handles this natively)
+if (!process.env.VERCEL) {
+  app.use(express.static(path.join(__dirname)));
+}
 
 // Helper: generate booking ID BKR-DDMM-XXXX
 function generateBookingId() {
