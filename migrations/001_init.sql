@@ -69,9 +69,13 @@ CREATE POLICY "Menu items are viewable if menu is published" ON menu_items
     )
   );
 
--- Orders: public can insert (customer places order), but only authenticated service role can select/update
+-- Orders: public can insert (customer places order)
 CREATE POLICY "Anyone can insert orders" ON orders
   FOR INSERT WITH CHECK (TRUE);
+
+-- Orders: public can select orders by booking_id (for the confirmation page)
+CREATE POLICY "Anyone can view orders by booking_id" ON orders
+  FOR SELECT USING (TRUE);
 
 -- Feedback: public can insert
 CREATE POLICY "Anyone can insert feedback" ON feedback

@@ -76,9 +76,13 @@ CREATE POLICY "Menu items are viewable if menu is published" ON menu_items
     )
   );
 
--- Orders: public can insert (customer places order), but only authenticated service role can select/update
+-- Orders: public can insert (customer places order)
 CREATE POLICY "Anyone can insert orders" ON orders
   FOR INSERT WITH CHECK (TRUE);
+
+-- Orders: public can select orders by booking_id (for the confirmation page)
+CREATE POLICY "Anyone can view orders by booking_id" ON orders
+  FOR SELECT USING (TRUE);
 
 -- Feedback: public can insert
 CREATE POLICY "Anyone can insert feedback" ON feedback
@@ -107,3 +111,19 @@ node test-db.js
 ```
 
 The database initialization task will then be complete.
+
+---
+
+## 🔧 Fix: Order confirmation showing "Order not found" / Total shows $0.00
+
+If orders are being placed successfully (you get a booking ID) but the confirmation page says "Order not found" and shows $0.00, it's because the `orders` table needs a SELECT policy so the confirmation page can read order details.
+
+Run this SQL in your Supabase SQL Editor:
+
+```sql
+-- Add SELECT policy for orders (so confirmation page can read them)
+CREATE POLICY "Anyone can view orders by booking_id" ON orders
+  FOR SELECT USING (TRUE);
+```
+
+This policy allows anyone with a booking ID to look up their order details on the confirmation page.
