@@ -35,16 +35,17 @@ function compressImage(blob, maxDimension = 1200, quality = 0.8) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    videoElement = document.getElementById('videoElement');
-    const btnCapture = document.getElementById('btnCapture');
-    const btnUploadFile = document.getElementById('btnUploadFile');
-    const fileInput = document.getElementById('fileInput');
-    const cameraStatus = document.getElementById('cameraStatus');
-    const btnPublish = document.getElementById('btnPublish');
+// ES modules are deferred — DOM is fully parsed when this code runs
+// (no need for DOMContentLoaded wrapper, which would miss the event
+// due to top-level await blocking registration)
 
-    if (!videoElement || !btnCapture || !btnUploadFile || !fileInput) return;
+videoElement = document.getElementById('videoElement');
+const btnCapture = document.getElementById('btnCapture');
+const btnUploadFile = document.getElementById('btnUploadFile');
+const fileInput = document.getElementById('fileInput');
+const cameraStatus = document.getElementById('cameraStatus');
 
+if (videoElement && btnCapture && btnUploadFile && fileInput) {
     // Request camera access
     async function initCamera() {
         try {
@@ -172,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mediaStream.getTracks().forEach(track => track.stop());
         }
     });
-});
+}
 
 // Export blob for use in other modules
 function getCapturedImageBlob() {
