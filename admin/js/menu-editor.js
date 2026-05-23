@@ -29,9 +29,21 @@ document.addEventListener('DOMContentLoaded', () => {
         successMessage.style.display = 'none';
     }
 
+    // Update the step progress indicator
+    function setActiveStep(step) {
+        for (let i = 1; i <= 3; i++) {
+            const el = document.getElementById(`step${i}`);
+            if (el) {
+                el.classList.toggle('active', i === step);
+            }
+        }
+    }
+
     // Render menu items as editable cards
     window.renderMenuItems = function(items) {
         hideMessages();
+        setActiveStep(2); // Mark Step 2 (Review) as active
+        btnPublish.style.display = 'block'; // Show publish button
         menuItemsContainer.innerHTML = ''; // Clear previous
 
         items.forEach((item, index) => {
@@ -162,7 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.error || 'Failed to publish menu');
             }
 
-            showSuccess('Menu published successfully! It will appear on the customer page shortly.');
+            setActiveStep(3); // Mark Step 3 (Publish) as active
+            showSuccess('Menu published successfully! ✅ It will appear on the customer page shortly.');
 
             // Optionally clear the form after a delay
             setTimeout(() => {
