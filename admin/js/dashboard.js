@@ -1,5 +1,6 @@
 // Admin dashboard — uses adminSupabase with no persistent session
 import { adminSupabase, requireAuth, handleLogout } from './auth-guard.js';
+import { getTodayCanada, formatTimeCanada, formatDateTimeCanada } from '../../js/canada-date.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // Require authentication — redirects to login if no session
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Load today's orders (we'll filter by date, but for simplicity we'll get all pending/ready and sort by date)
   // Better: get orders from today only.
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const today = getTodayCanada(); // YYYY-MM-DD in Canada/Eastern
 
   // We'll load orders and feedback and set up realtime subscriptions
 
@@ -131,10 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Time
       const tdTime = document.createElement('td');
       const createdAt = new Date(order.created_at);
-      tdTime.textContent = createdAt.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      });
+      tdTime.textContent = formatTimeCanada(createdAt);
       tr.appendChild(tdTime);
 
       // Add row to table
@@ -201,13 +199,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Time
       const tdTime = document.createElement('td');
       const createdAt = new Date(fb.created_at);
-      tdTime.textContent = createdAt.toLocaleString([], {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
+      tdTime.textContent = formatDateTimeCanada(createdAt);
       tr.appendChild(tdTime);
 
       if (feedbackTableBody) feedbackTableBody.appendChild(tr);
@@ -250,7 +242,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.setAttribute('href', url);
-      link.setAttribute('download', `feedback_${new Date().toISOString().slice(0, 10)}.csv`);
+      link.setAttribute('download', `feedback_${getTodayCanada()}.csv`);
       link.style.visibility = 'hidden';
       document.body.appendChild(link);
       link.click();

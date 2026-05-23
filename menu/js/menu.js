@@ -1,5 +1,6 @@
 // Import supabase client
 import { supabase } from '../../js/supabase-client.js';
+import { getTodayCanada, formatDateCanada } from '../../js/canada-date.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const menuItemsGrid = document.getElementById('menuItemsGrid');
@@ -20,12 +21,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Format date
-    function formatDate(dateString) {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-    }
-
     // Load menu from Supabase
     async function loadMenu() {
         if (menuItemsGrid) {
@@ -38,8 +33,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
-            // Get today's published menu
-            const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+            // Get today's published menu (Canada timezone)
+            const today = getTodayCanada();
 
             const { data, error } = await supabase
                 .from('menus')
@@ -70,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // Set date
-            if (menuDate) menuDate.textContent = formatDate(data.date);
+            if (menuDate) menuDate.textContent = formatDateCanada(data.date);
 
             // Store menu items
             allMenuItems = data.menu_items.filter(item => item.available); // Only show available items

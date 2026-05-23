@@ -1,4 +1,6 @@
 // Menu editor functionality for rendering, editing, and publishing menu items
+import { getTodayCanada } from '../../js/canada-date.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const btnPublish = document.getElementById('btnPublish');
     const menuItemsContainer = document.getElementById('menuItemsContainer');
@@ -136,8 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Get today's date
-        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        // Get today's date (Canada timezone)
+        const today = getTodayCanada();
 
         btnPublish.disabled = true;
         btnPublish.textContent = 'Publishing...';

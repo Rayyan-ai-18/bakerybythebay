@@ -1,5 +1,6 @@
 // Import supabase client (anon key)
 import { supabase } from '../../js/supabase-client.js';
+import { getDatePartsCanada } from '../../js/canada-date.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const orderSummary = document.getElementById('orderSummary');
@@ -100,11 +101,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Calculate total
         const total = window.getCartTotal();
 
-        // Generate booking ID: BKR-DDMM-XXXX
+        // Generate booking ID: BKR-DDMM-XXXX (using Canada date)
         function generateBookingId() {
-            const now = new Date();
-            const day = String(now.getDate()).padStart(2, '0');
-            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const { day, month } = getDatePartsCanada();
             const random = Math.random().toString(36).substring(2, 6).toUpperCase();
             return `BKR-${day}${month}-${random}`;
         }
