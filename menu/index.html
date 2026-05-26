@@ -3,50 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery by the Bay - Today's Menu</title>
+    <title>Bakery by the Bay | Today's Menu</title>
+    <meta name="description" content="Freshly baked goods made with love. View today's menu.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
+    <!-- Navigation -->
+    <header class="header" id="header">
         <div class="header__inner">
             <a href="/" class="header__logo">
-                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay" style="height:36px;width:auto;">
-                <div>
-                    <div class="header__logo-text">Bakery by the Bay</div>
-                    <div class="header__logo-tagline">Artisan Bakery</div>
-                </div>
+                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay">
+                <span class="header__logo-text">Bakery by the Bay</span>
+                <span class="header__logo-divider">|</span>
+                <span class="header__logo-tagline">Artisan Bakery</span>
             </a>
             <button class="header__toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
             <ul class="header__nav" id="navLinks">
                 <li><a href="/" class="header__nav-link">Home</a></li>
                 <li><a href="/menu/" class="header__nav-link header__nav-link--active">Today's Menu</a></li>
                 <li><a href="/feedback/" class="header__nav-link">Contact</a></li>
+                <li><a href="/admin/" class="header__nav-link">Staff</a></li>
                 <li>
                     <button class="header__cart-btn" id="cartToggle" aria-label="Open cart">
-                        🛒 <span id="cartCountSmall">0</span>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <path d="M16 10a4 4 0 01-8 0"/>
+                        </svg>
+                        <span class="cart-badge-nav" id="cartCountNav"></span>
                     </button>
                 </li>
             </ul>
         </div>
     </header>
 
-    <!-- Hero -->
-    <section class="menu-hero">
-        <h1>Today's Menu</h1>
-        <p>Handcrafted daily with the finest ingredients</p>
-        <div class="menu-date">📅 <span id="menuDate"></span></div>
-    </section>
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay">
+        <ul class="mobile-overlay__links">
+            <li><a href="/" class="mobile-overlay__link">Home</a></li>
+            <li><a href="/menu/" class="mobile-overlay__link mobile-overlay__link--active">Today's Menu</a></li>
+            <li><a href="/feedback/" class="mobile-overlay__link">Contact</a></li>
+            <li><a href="/admin/" class="mobile-overlay__link">Staff</a></li>
+        </ul>
+    </div>
 
-    <main class="container">
-        <!-- Category Filter -->
+    <!-- Menu Header Banner -->
+    <div class="menu-header">
+        <p class="menu-header__eyebrow">Updated daily</p>
+        <h1 class="menu-header__title">Today's Menu</h1>
+        <p class="menu-header__date" id="menuDate"></p>
+    </div>
+
+    <main>
+        <!-- Category Filters -->
         <div class="menu-categories" id="menuCategories">
             <button class="menu-category-btn active" data-category="all">All</button>
         </div>
 
-        <!-- Menu Items Grid -->
+        <!-- Menu Items -->
         <section class="menu-items-grid" id="menuItemsGrid">
-            <div class="loading">
+            <div class="loading" style="grid-column:1/-1;">
                 <div class="spinner"></div>
                 <p>Loading today's menu...</p>
             </div>
@@ -59,15 +81,11 @@
     <!-- Cart Drawer -->
     <div class="cart-drawer" id="cartDrawer">
         <div class="cart-drawer-header">
-            <h2>Your Cart</h2>
+            <h2>Your Order</h2>
             <button class="cart-drawer-close" id="cartDrawerClose">✕</button>
         </div>
         <div class="cart-items" id="cartItems">
-            <div class="empty-state">
-                <div class="empty-state__icon">🛒</div>
-                <p>Your cart is empty</p>
-                <p class="text-small text-muted">Add items from the menu to get started</p>
-            </div>
+            <!-- Populated by cart.js -->
         </div>
         <div class="cart-footer">
             <div class="cart-total-row">
@@ -81,16 +99,21 @@
     </div>
 
     <!-- Floating Cart Button -->
-    <button class="cart-toggle" id="cartToggleFloat" aria-label="Open cart">
-        🛒
-        <span class="cart-badge" id="cartCount" style="display:none">0</span>
+    <button class="cart-toggle" id="cartToggleFloat" aria-label="View cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span class="cart-fab-text" id="cartFabText">View Cart</span>
+        <span class="cart-badge" id="cartCount">0</span>
     </button>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="footer__inner">
             <div class="footer__brand">
-                <h3>🥐 Bakery by the Bay</h3>
+                <h3>Bakery by the Bay</h3>
                 <p>An artisan bakery serving fresh, handcrafted pastries, breads, and treats daily. Baked with love in our seaside kitchen.</p>
             </div>
             <div class="footer__links">
@@ -102,12 +125,15 @@
                 </ul>
             </div>
             <div class="footer__links">
-                <h4>Admin</h4>
-                <ul>
-                    <li><a href="/admin/">Staff Login</a></li>
-                    <li><a href="/admin/dashboard.html">Dashboard</a></li>
-                    <li><a href="/admin/menu-upload.html">Upload Menu</a></li>
-                </ul>
+                <h4>Visit</h4>
+                <p class="footer__address">
+                    123 Hurontario Street<br>
+                    Collingwood, ON
+                </p>
+                <p class="footer__hours">
+                    Mon–Sat: 7am – 5pm<br>
+                    Sun: 8am – 3pm
+                </p>
             </div>
         </div>
         <div class="footer__bottom">
@@ -115,6 +141,8 @@
         </div>
     </footer>
 
+    <script src="../js/nav.js" defer></script>
+    <script src="../js/animations.js" defer></script>
     <script type="module" src="./js/menu.js"></script>
     <script type="module" src="./js/cart.js"></script>
 </body>

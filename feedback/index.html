@@ -3,72 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery by the Bay - Contact & Feedback</title>
+    <title>Bakery by the Bay | Contact & Feedback</title>
+    <meta name="description" content="We'd love to hear from you. Share your feedback with Bakery by the Bay.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
+    <!-- Navigation -->
+    <header class="header" id="header">
         <div class="header__inner">
             <a href="/" class="header__logo">
-                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay" style="height:36px;width:auto;">
-                <div>
-                    <div class="header__logo-text">Bakery by the Bay</div>
-                    <div class="header__logo-tagline">Artisan Bakery</div>
-                </div>
+                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay">
+                <span class="header__logo-text">Bakery by the Bay</span>
+                <span class="header__logo-divider">|</span>
+                <span class="header__logo-tagline">Artisan Bakery</span>
             </a>
             <button class="header__toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
             <ul class="header__nav" id="navLinks">
                 <li><a href="/" class="header__nav-link">Home</a></li>
                 <li><a href="/menu/" class="header__nav-link">Today's Menu</a></li>
                 <li><a href="/feedback/" class="header__nav-link header__nav-link--active">Contact</a></li>
+                <li><a href="/admin/" class="header__nav-link">Staff</a></li>
             </ul>
         </div>
     </header>
 
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay">
+        <ul class="mobile-overlay__links">
+            <li><a href="/" class="mobile-overlay__link">Home</a></li>
+            <li><a href="/menu/" class="mobile-overlay__link">Today's Menu</a></li>
+            <li><a href="/feedback/" class="mobile-overlay__link mobile-overlay__link--active">Contact</a></li>
+            <li><a href="/admin/" class="mobile-overlay__link">Staff</a></li>
+        </ul>
+    </div>
+
     <div class="feedback-page">
-        <div class="feedback-header">
-            <h1>Share Your Feedback</h1>
-            <p>We'd love to hear about your experience at Bakery by the Bay</p>
-        </div>
+        <div class="feedback-layout">
+            <!-- Left: Brand message -->
+            <div class="feedback-brand reveal">
+                <p class="eyebrow">Get in touch</p>
+                <p class="feedback-brand__heading">
+                    We'd love<br>to hear from you.
+                </p>
+                <p class="feedback-brand__sub">
+                    Your feedback shapes every batch we bake. Whether it's a suggestion, a compliment, or just to say hello, we're all ears.
+                </p>
+            </div>
 
-        <div class="feedback-form-card">
-            <div id="error-message" class="message message--error"></div>
-            <div id="success-message" class="message message--success"></div>
+            <!-- Right: Form -->
+            <div class="feedback-form-card reveal">
+                <div id="error-message" class="message message--error"></div>
+                <div id="success-message" class="message message--success"></div>
 
-            <form id="feedbackForm">
-                <div class="form-group">
-                    <label class="form-label" for="feedbackName">Name</label>
-                    <input class="form-input" type="text" id="feedbackName" placeholder="Your name" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="feedbackPhone">Phone Number</label>
-                    <input class="form-input" type="tel" id="feedbackPhone" placeholder="Your phone number" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Rating</label>
-                    <div class="rating-stars" id="ratingStars">
-                        <span class="star" data-rating="5">★</span>
-                        <span class="star" data-rating="4">★</span>
-                        <span class="star" data-rating="3">★</span>
-                        <span class="star" data-rating="2">★</span>
-                        <span class="star" data-rating="1">★</span>
+                <form id="feedbackForm" class="feedback-form">
+                    <div class="form-group">
+                        <label class="form-label" for="feedbackName">Name</label>
+                        <input class="form-input" type="text" id="feedbackName" placeholder="Your name" required>
                     </div>
-                    <input type="hidden" id="feedbackRatingValue" value="0">
-                </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="feedbackMessage">Message</label>
-                    <textarea class="form-textarea" id="feedbackMessage" placeholder="Tell us about your experience..." rows="4" required></textarea>
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="feedbackPhone">Phone Number</label>
+                        <input class="form-input" type="tel" id="feedbackPhone" placeholder="Your phone number" required>
+                    </div>
 
-                <button type="submit" class="btn btn--primary btn--block btn--lg">Submit Feedback</button>
-            </form>
+                    <div class="form-group">
+                        <label class="form-label">Rating</label>
+                        <div class="rating-stars" id="ratingStars">
+                            <span class="star" data-rating="5">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="1">★</span>
+                        </div>
+                        <input type="hidden" id="feedbackRatingValue" value="0">
+                    </div>
 
-            <div class="feedback-note">
-                Your feedback helps us improve and serve you better. Thank you!
+                    <div class="form-group">
+                        <label class="form-label" for="feedbackMessage">Message</label>
+                        <textarea class="form-textarea" id="feedbackMessage" placeholder="Tell us about your experience..." rows="4" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--block btn--lg">Send Feedback</button>
+                </form>
+
+                <p class="feedback-note">
+                    Your feedback helps us improve and serve you better. Thank you!
+                </p>
             </div>
         </div>
     </div>
@@ -77,8 +103,8 @@
     <footer class="footer">
         <div class="footer__inner">
             <div class="footer__brand">
-                <h3>🥐 Bakery by the Bay</h3>
-                <p>An artisan bakery serving fresh, handcrafted pastries, breads, and treats daily. Baked with love in our seaside kitchen.</p>
+                <h3>Bakery by the Bay</h3>
+                <p>An artisan bakery serving fresh, handcrafted pastries, breads, and treats daily. Baked with love in our seaside kitchen using recipes passed down through generations.</p>
             </div>
             <div class="footer__links">
                 <h4>Quick Links</h4>
@@ -89,12 +115,15 @@
                 </ul>
             </div>
             <div class="footer__links">
-                <h4>Admin</h4>
-                <ul>
-                    <li><a href="/admin/">Staff Login</a></li>
-                    <li><a href="/admin/dashboard.html">Dashboard</a></li>
-                    <li><a href="/admin/menu-upload.html">Upload Menu</a></li>
-                </ul>
+                <h4>Visit</h4>
+                <p class="footer__address">
+                    123 Hurontario Street<br>
+                    Collingwood, ON
+                </p>
+                <p class="footer__hours">
+                    Mon–Sat: 7am – 5pm<br>
+                    Sun: 8am – 3pm
+                </p>
             </div>
         </div>
         <div class="footer__bottom">
@@ -102,6 +131,8 @@
         </div>
     </footer>
 
+    <script src="../js/nav.js" defer></script>
+    <script src="../js/animations.js" defer></script>
     <script type="module" src="./js/feedback.js"></script>
 </body>
 </html>

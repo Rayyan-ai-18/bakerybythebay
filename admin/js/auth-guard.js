@@ -1,7 +1,6 @@
 // Shared auth guard for all admin pages
 // Session persisted in localStorage — survives page navigation and browser restarts.
 // Owner only needs to log in once; use the Sign Out button to end the session.
-// Home link (/) and View Site (/menu/) are safe to click — session stays active.
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const supabaseUrl = 'https://rrokmjzrnbapyjziqpbp.supabase.co'
@@ -61,5 +60,5 @@ export async function requireAuth() {
  */
 export async function handleLogout() {
   await adminSupabase.auth.signOut()
-  window.location.replace('index.html')
+  window.location.replace('/')
 }

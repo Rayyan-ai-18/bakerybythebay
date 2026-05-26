@@ -3,63 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery by the Bay - Order Confirmation</title>
+    <title>Bakery by the Bay | Order Confirmed</title>
+    <meta name="description" content="Your order has been confirmed at Bakery by the Bay.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
+    <!-- Navigation -->
+    <header class="header" id="header">
         <div class="header__inner">
             <a href="/" class="header__logo">
-                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay" style="height:36px;width:auto;">
-                <div>
-                    <div class="header__logo-text">Bakery by the Bay</div>
-                    <div class="header__logo-tagline">Artisan Bakery</div>
-                </div>
+                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay">
+                <span class="header__logo-text">Bakery by the Bay</span>
+                <span class="header__logo-divider">|</span>
+                <span class="header__logo-tagline">Artisan Bakery</span>
             </a>
             <button class="header__toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
             <ul class="header__nav" id="navLinks">
                 <li><a href="/" class="header__nav-link">Home</a></li>
                 <li><a href="/menu/" class="header__nav-link">Today's Menu</a></li>
                 <li><a href="/feedback/" class="header__nav-link">Contact</a></li>
+                <li><a href="/admin/" class="header__nav-link">Staff</a></li>
             </ul>
         </div>
     </header>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay">
+        <ul class="mobile-overlay__links">
+            <li><a href="/" class="mobile-overlay__link">Home</a></li>
+            <li><a href="/menu/" class="mobile-overlay__link">Today's Menu</a></li>
+            <li><a href="/feedback/" class="mobile-overlay__link">Contact</a></li>
+            <li><a href="/admin/" class="mobile-overlay__link">Staff</a></li>
+        </ul>
+    </div>
 
     <div class="confirmation-page">
         <a href="/menu/" class="btn-back">← Back to Menu</a>
 
         <div class="confirmation-card">
-            <div class="confirmation-icon">🎉</div>
-            <h1>Order Confirmed!</h1>
+            <!-- Animated checkmark -->
+            <div class="confirmation-checkmark">
+                <svg viewBox="0 0 60 60">
+                    <circle class="check-circle" cx="30" cy="30" r="26" fill="none" stroke="#8A9E8C" stroke-width="2.5"/>
+                    <path class="check-tick" d="M18 30l8 8 16-16" fill="none" stroke="#8A9E8C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+
+            <h1>Order Confirmed</h1>
             <p class="subtitle">Thank you for your order. Show this confirmation at the counter to pay and collect your items.</p>
 
             <div id="error-message" class="message message--error"></div>
             <div id="success-message" class="message message--success"></div>
 
             <div class="booking-id-display">
-                <span>📋</span>
-                <span id="bookingId">BKR-0000-XXXX</span>
+                <label>Booking ID</label>
+                <span class="booking-id" id="bookingId">BKR-0000-XXXX</span>
                 <button class="copy-btn" id="copyButton">📋 Copy</button>
             </div>
 
             <div class="confirmation-items">
-                <div class="confirmation-items-header">🛍️ Your Order</div>
+                <div class="confirmation-items-header">Your Order</div>
                 <ul class="confirmation-items-list" id="orderItems">
                 </ul>
                 <div class="confirmation-total">
                     <span>Total</span>
-                    <span class="total-value" id="orderTotal">$0.00</span>
+                    <span id="orderTotal">$0.00</span>
                 </div>
             </div>
 
-            <p class="confirmation-note">
-                This booking ID is valid for today only. Please visit during business hours to collect your order.
+            <p class="confirmation-message">
+                See you soon! Pay at the counter when you pick up.
             </p>
 
             <div class="confirmation-actions">
-                <a href="/menu/" class="btn btn--primary">View Menu</a>
-                <a href="/feedback/" class="btn btn--secondary">Leave Feedback</a>
+                <a href="/menu/" class="btn btn--outline">Back to Menu</a>
+                <a href="/feedback/" class="btn btn--ghost" style="color:var(--brown-light);">Leave Feedback</a>
             </div>
         </div>
     </div>
@@ -68,7 +91,7 @@
     <footer class="footer">
         <div class="footer__inner">
             <div class="footer__brand">
-                <h3>🥐 Bakery by the Bay</h3>
+                <h3>Bakery by the Bay</h3>
                 <p>An artisan bakery serving fresh, handcrafted pastries, breads, and treats daily. Baked with love in our seaside kitchen.</p>
             </div>
             <div class="footer__links">
@@ -80,12 +103,15 @@
                 </ul>
             </div>
             <div class="footer__links">
-                <h4>Admin</h4>
-                <ul>
-                    <li><a href="/admin/">Staff Login</a></li>
-                    <li><a href="/admin/dashboard.html">Dashboard</a></li>
-                    <li><a href="/admin/menu-upload.html">Upload Menu</a></li>
-                </ul>
+                <h4>Visit</h4>
+                <p class="footer__address">
+                    123 Hurontario Street<br>
+                    Collingwood, ON
+                </p>
+                <p class="footer__hours">
+                    Mon–Sat: 7am – 5pm<br>
+                    Sun: 8am – 3pm
+                </p>
             </div>
         </div>
         <div class="footer__bottom">
@@ -93,6 +119,8 @@
         </div>
     </footer>
 
+    <script src="../js/nav.js" defer></script>
+    <script src="../js/animations.js" defer></script>
     <script type="module" src="./js/confirmation.js"></script>
 </body>
 </html>

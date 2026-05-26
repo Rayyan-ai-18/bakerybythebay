@@ -49,11 +49,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (error) {
       console.error('Error loading orders:', error);
-      // Optionally show error
       return;
     }
 
     if (ordersLoading) ordersLoading.style.display = 'none';
+
+    // Update stats
+    const totalOrders = data ? data.length : 0;
+    const pendingCount = data ? data.filter(o => o.status === 'pending').length : 0;
+    const readyCount = data ? data.filter(o => o.status === 'ready').length : 0;
+    document.getElementById('statOrders').textContent = totalOrders;
+    document.getElementById('statPending').textContent = pendingCount;
+    document.getElementById('statReady').textContent = readyCount;
 
     if (!data || data.length === 0) {
       if (ordersNoData) ordersNoData.style.display = 'block';
@@ -162,6 +169,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (feedbackLoading) feedbackLoading.style.display = 'none';
+
+    // Update feedback stat
+    const feedbackCount = data ? data.length : 0;
+    document.getElementById('statFeedback').textContent = feedbackCount;
 
     if (!data || data.length === 0) {
       if (feedbackNoData) feedbackNoData.style.display = 'block';

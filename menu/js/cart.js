@@ -89,19 +89,33 @@ function closeCartDrawer() {
 
 // Update cart UI (called when cart changes)
 function updateCartUI() {
+    // Update nav badge
+    const cartCountNav = document.getElementById('cartCountNav');
+    if (cartCountNav) {
+        const count = getCartItemCount();
+        cartCountNav.classList.toggle('has-items', count > 0);
+    }
+
     // Update cart badge in floating button
     const cartCount = document.getElementById('cartCount');
     if (cartCount) {
         const count = getCartItemCount();
         cartCount.textContent = count;
-        cartCount.style.display = count > 0 ? 'flex' : 'none';
+        cartCount.classList.toggle('has-items', count > 0);
     }
 
-    // Update cart count in header
-    const cartCountSmall = document.getElementById('cartCountSmall');
-    if (cartCountSmall) {
+    // Toggle FAB visibility and update text
+    const cartToggleFloat = document.getElementById('cartToggleFloat');
+    const cartFabText = document.getElementById('cartFabText');
+    if (cartToggleFloat) {
         const count = getCartItemCount();
-        cartCountSmall.textContent = count;
+        cartToggleFloat.classList.toggle('has-items', count > 0);
+        if (count > 0 && cartFabText) {
+            const total = getCartTotal();
+            cartFabText.textContent = `${count} item${count !== 1 ? 's' : ''} · $${total.toFixed(2)}`;
+        } else if (cartFabText) {
+            cartFabText.textContent = 'View Cart';
+        }
     }
 
     // Update cart total in drawer
@@ -116,10 +130,16 @@ function updateCartUI() {
         const cart = getCart();
         if (cart.length === 0) {
             cartItemsContainer.innerHTML = `
-                <div class="empty-cart">
-                    <div class="empty-cart-icon">🛒</div>
-                    <p>Your cart is empty</p>
-                    <p class="text-small text-muted">Add items from the menu to get started</p>
+                <div style="text-align:center;padding:3rem 0;">
+                    <div style="width:48px;height:48px;margin:0 auto 1rem;opacity:0.3;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <path d="M16 10a4 4 0 01-8 0"/>
+                        </svg>
+                    </div>
+                    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:#3D2B1F;">Your order is empty</p>
+                    <p style="font-size:0.8rem;color:#7A5C4A;margin-top:0.5rem;">Add items from the menu to get started</p>
                 </div>
             `;
         } else {
@@ -165,13 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.addEventListener('click', closeCartDrawer);
     }
 
-    // Mobile nav toggle
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.getElementById('navLinks');
-    if (navToggle && navLinks) {
-        navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
-        });
+    // Floating cart toggle
+    const cartToggleFloat = document.getElementById('cartToggleFloat');
+    if (cartToggleFloat) {
+        cartToggleFloat.addEventListener('click', openCartDrawer);
     }
 });
 

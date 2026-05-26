@@ -3,45 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery by the Bay - Checkout</title>
+    <title>Bakery by the Bay | Checkout</title>
+    <meta name="description" content="Place your pre-order for pickup at Bakery by the Bay.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
+    <!-- Navigation -->
+    <header class="header" id="header">
         <div class="header__inner">
             <a href="/" class="header__logo">
-                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay" style="height:36px;width:auto;">
-                <div>
-                    <div class="header__logo-text">Bakery by the Bay</div>
-                    <div class="header__logo-tagline">Artisan Bakery</div>
-                </div>
+                <img src="../assets/images/logo-icon.png" alt="Bakery by the Bay">
+                <span class="header__logo-text">Bakery by the Bay</span>
+                <span class="header__logo-divider">|</span>
+                <span class="header__logo-tagline">Artisan Bakery</span>
             </a>
             <button class="header__toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
             <ul class="header__nav" id="navLinks">
                 <li><a href="/" class="header__nav-link">Home</a></li>
                 <li><a href="/menu/" class="header__nav-link">Today's Menu</a></li>
                 <li><a href="/feedback/" class="header__nav-link">Contact</a></li>
+                <li><a href="/admin/" class="header__nav-link">Staff</a></li>
             </ul>
         </div>
     </header>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay">
+        <ul class="mobile-overlay__links">
+            <li><a href="/" class="mobile-overlay__link">Home</a></li>
+            <li><a href="/menu/" class="mobile-overlay__link">Today's Menu</a></li>
+            <li><a href="/feedback/" class="mobile-overlay__link">Contact</a></li>
+            <li><a href="/admin/" class="mobile-overlay__link">Staff</a></li>
+        </ul>
+    </div>
 
     <div class="checkout-page">
         <a href="/menu/" class="btn-back">← Back to Menu</a>
 
         <div class="checkout-header">
-            <h1>Place Your Order</h1>
+            <p class="checkout-header__eyebrow">Your order</p>
+            <h1>Almost there</h1>
             <p>Enter your details and we'll have it ready for pickup</p>
         </div>
 
-        <div class="checkout-form-card">
+        <div class="checkout-card">
             <div id="error-message" class="message message--error"></div>
             <div id="success-message" class="message message--success"></div>
 
             <div class="order-summary-card">
-                <h3>📋 Your Order</h3>
+                <h3>Order Summary</h3>
                 <div id="orderSummary">
-                    <p class="text-muted">Your cart is empty</p>
+                    <p class="text-muted text-small">Your cart is empty</p>
                 </div>
                 <div class="order-total-row">
                     <span class="order-total-label">Total</span>
@@ -49,7 +66,7 @@
                 </div>
             </div>
 
-            <form id="checkoutForm">
+            <form id="checkoutForm" class="checkout-form">
                 <div class="form-group">
                     <label class="form-label" for="customerName">Name</label>
                     <input class="form-input" type="text" id="customerName" placeholder="Your name" required>
@@ -60,14 +77,14 @@
                     <input class="form-input" type="tel" id="customerPhone" placeholder="Your phone number" required>
                 </div>
 
-                <button type="submit" class="btn btn--primary btn--lg btn--block">
+                <button type="submit" class="btn btn--primary btn--block btn--lg">
                     Place Order →
                 </button>
             </form>
 
-            <div class="checkout-note">
-                💡 Payment will be made in person at the bakery. No online payment required.
-            </div>
+            <p class="privacy-note">
+                We only use your name and number to manage your pickup order. Payment is made in person at the bakery.
+            </p>
         </div>
     </div>
 
@@ -75,7 +92,7 @@
     <footer class="footer">
         <div class="footer__inner">
             <div class="footer__brand">
-                <h3>🥐 Bakery by the Bay</h3>
+                <h3>Bakery by the Bay</h3>
                 <p>An artisan bakery serving fresh, handcrafted pastries, breads, and treats daily. Baked with love in our seaside kitchen.</p>
             </div>
             <div class="footer__links">
@@ -87,12 +104,15 @@
                 </ul>
             </div>
             <div class="footer__links">
-                <h4>Admin</h4>
-                <ul>
-                    <li><a href="/admin/">Staff Login</a></li>
-                    <li><a href="/admin/dashboard.html">Dashboard</a></li>
-                    <li><a href="/admin/menu-upload.html">Upload Menu</a></li>
-                </ul>
+                <h4>Visit</h4>
+                <p class="footer__address">
+                    123 Hurontario Street<br>
+                    Collingwood, ON
+                </p>
+                <p class="footer__hours">
+                    Mon–Sat: 7am – 5pm<br>
+                    Sun: 8am – 3pm
+                </p>
             </div>
         </div>
         <div class="footer__bottom">
@@ -100,6 +120,8 @@
         </div>
     </footer>
 
+    <script src="../js/nav.js" defer></script>
+    <script src="../js/animations.js" defer></script>
     <script type="module" src="../menu/js/cart.js"></script>
     <script type="module" src="./js/checkout.js"></script>
 </body>

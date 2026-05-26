@@ -15,6 +15,23 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey); // service role bypasses RLS
 const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey); // anon key for client-side
 
+// Custom middleware: rewrite requests without .html extension to serve .html files
+// e.g. /order/checkout -> /order/checkout.html
+app.use((req, res, next) => {
+  const url = req.path;
+  // Only rewrite non-API, non-root paths that don't already have an extension
+  if (!url.startsWith('/api/') && url !== '/' && !path.extname(url)) {
+    // Strip leading slash for safe path.join on all platforms (Windows fix)
+    const relativePath = url.substring(1) + '.html';
+    const htmlPath = path.join(__dirname, relativePath);
+    const fs = require('fs');
+    if (fs.existsSync(htmlPath)) {
+      req.url = url + '.html';
+    }
+  }
+  next();
+});
+
 // Serve static files (only needed for local development; Vercel handles this natively)
 if (!process.env.VERCEL) {
   app.use(express.static(path.join(__dirname)));
