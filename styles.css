@@ -2668,8 +2668,13 @@ p {
     font-size: 0.85rem;
     color: rgba(250, 247, 242, 0.6);
     text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
     transition: all var(--duration-fast) var(--ease-smooth);
     min-height: 44px;
+    width: 100%;
+    text-align: left;
 }
 
 .admin-sidebar-link:hover {
