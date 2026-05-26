@@ -20,10 +20,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(session?.user?.email || 'Admin');
   }
 
-  // Logout button
+  // Logout buttons (sidebar + nav link + mobile topbar)
   const btnLogout = document.getElementById('btnLogout');
   if (btnLogout) {
     btnLogout.addEventListener('click', handleLogout);
+  }
+  const btnLogoutNav = document.getElementById('btnLogoutNav');
+  if (btnLogoutNav) {
+    btnLogoutNav.addEventListener('click', handleLogout);
+  }
+  const btnLogoutMobile = document.getElementById('btnLogoutMobile');
+  if (btnLogoutMobile) {
+    btnLogoutMobile.addEventListener('click', handleLogout);
   }
 
   // Load today's orders (we'll filter by date, but for simplicity we'll get all pending/ready and sort by date)

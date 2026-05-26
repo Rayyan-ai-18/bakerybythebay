@@ -3092,39 +3092,150 @@ table tr:last-child td { border-bottom: none; }
     color: var(--espresso);
 }
 
-/* Mobile responsive admin */
-@media (max-width: 768px) {
-    .admin-sidebar {
-        width: 60px;
-        overflow: hidden;
+/* Mobile responsive admin
+   < 768px: sidebar becomes a fixed bottom navigation bar
+   Keeps desktop layout unchanged
+*/
+@media (max-width: 767px) {
+    /* Bottom nav bar replaces fixed sidebar */
+    .admin-layout {
+        flex-direction: column;
+        padding-bottom: 0;
     }
 
-    .admin-sidebar-brand h2,
-    .admin-sidebar-brand p,
-    .admin-sidebar-link span:not(:first-child),
-    .admin-sidebar-footer .btn span {
+    .admin-sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        width: 100%;
+        height: auto;
+        z-index: 100;
+        flex-direction: row;
+        background: var(--espresso);
+        padding: 0;
+        padding-bottom: env(safe-area-inset-bottom, 0);
+        border-top: 1px solid var(--border-dark);
+        box-shadow: 0 -2px 16px rgba(0,0,0,0.15);
+    }
+
+    .admin-sidebar-brand {
         display: none;
     }
 
+    .admin-sidebar-nav {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        width: 100%;
+    }
+
     .admin-sidebar-link {
+        flex: 1;
+        flex-direction: column;
+        padding: 0.5rem 0.35rem;
+        gap: 0.2rem;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
         justify-content: center;
-        padding: 0.7rem;
+        align-items: center;
+        text-align: center;
+        min-height: 60px;
+        border-radius: 0;
+    }
+
+    .admin-sidebar-link span:first-child {
+        font-size: 1.4rem;
+        display: inline-block;
+    }
+
+    /* Keep text labels visible on mobile */
+    .admin-sidebar-link span:not(:first-child) {
+        display: inline-block;
+        font-size: 0.7rem;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    .admin-sidebar-link.active {
+        border-right: none;
+        border-top: 2px solid var(--terracotta);
+        background: rgba(250, 247, 242, 0.08);
+    }
+
+    .admin-sidebar-footer {
+        display: none;
+    }
+
+    /* Main content fills full width */
+    .admin-main {
+        width: 100%;
     }
 
     .admin-topbar {
-        padding: 0.75rem 1rem;
+        padding: 0.6rem 1rem;
+    }
+
+    .admin-topbar h1 {
+        font-size: 1.1rem;
+    }
+
+    .admin-user {
+        gap: 0.4rem;
+    }
+
+    .admin-user span {
+        font-size: 0.75rem;
     }
 
     .admin-content {
         padding: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .admin-sidebar {
-        width: 48px;
+        padding-bottom: calc(80px + 1.5rem); /* space for bottom nav + safe area */
     }
 
+    /* Stats grid: 2 columns on mobile */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+    }
+
+    .stat-card {
+        padding: 0.75rem;
+    }
+
+    .stat-card-icon {
+        font-size: 1.2rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .stat-card-value {
+        font-size: 1.4rem;
+    }
+
+    .stat-card-label {
+        font-size: 0.65rem;
+    }
+
+    /* Admin section headers tighter */
+    .admin-section-header {
+        padding: 0.6rem 0.85rem;
+    }
+
+    .admin-section-header h2 {
+        font-size: 0.65rem;
+    }
+
+    /* Tables more compact */
+    table th,
+    table td {
+        padding: 0.5rem 0.65rem;
+        font-size: 0.72rem;
+    }
+
+    /* Upload steps: stack vertically */
     .upload-steps {
         flex-direction: column;
     }
@@ -3132,15 +3243,70 @@ table tr:last-child td { border-bottom: none; }
     .upload-step {
         border-right: none;
         border-bottom: 1px solid var(--border);
+        font-size: 0.8rem;
     }
 
     .upload-step:last-child { border-bottom: none; }
 
+    /* Camera actions: stack */
     .camera-actions {
         flex-direction: column;
     }
 
     .camera-actions .btn {
         width: 100%;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+
+    .card__header h3 {
+        font-size: 1rem;
+    }
+
+    .admin-grid {
+        gap: 1rem;
+    }
+
+    .menu-item-card.editable {
+        padding: 0.75rem 1rem;
+    }
+
+    /* Hide mobile topbar logout button since Sign Out is now in bottom nav */
+    .btn-logout-mobile {
+        display: none !important;
+    }
+}
+
+/* Compact mobile logout button — visible only on mobile in topbar */
+.btn-logout-mobile {
+    display: none;
+    padding: 0.35rem 0.5rem;
+    font-size: 1rem;
+    min-height: 44px;
+    color: var(--brown-light);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color var(--duration-fast) var(--ease-smooth);
+    border-radius: 2px;
+}
+
+.btn-logout-mobile:hover {
+    color: var(--terracotta);
+    background: var(--border-light);
+}
+
+.btn-logout-mobile:active {
+    color: var(--terracotta);
+    background: var(--border-light);
+}
+
+@media (max-width: 767px) {
+    .btn-logout-mobile {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 }

@@ -161,10 +161,18 @@ if (videoElement && btnCapture && btnUploadFile && fileInput) {
     // Initialize camera
     initCamera();
 
-    // Logout button
+    // Logout buttons (sidebar + nav link + mobile topbar)
     const btnLogout = document.getElementById('btnLogout');
     if (btnLogout) {
       btnLogout.addEventListener('click', handleLogout);
+    }
+    const btnLogoutNav = document.getElementById('btnLogoutNav');
+    if (btnLogoutNav) {
+      btnLogoutNav.addEventListener('click', handleLogout);
+    }
+    const btnLogoutMobile = document.getElementById('btnLogoutMobile');
+    if (btnLogoutMobile) {
+      btnLogoutMobile.addEventListener('click', handleLogout);
     }
 
     // Cleanup on page unload
