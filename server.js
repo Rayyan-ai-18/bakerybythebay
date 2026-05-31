@@ -174,40 +174,74 @@ app.post('/api/scan-menu', async (req, res) => {
 // POST /api/publish-menu
 app.post('/api/publish-menu', async (req, res) => {
   try {
-    const { menuId, date, items } = req.body;
+    const { menuId, date, items, type } = req.body;
+    const menuType = type || 'daily_lunch'; // default for backward compat
 
-    if (!date || !Array.isArray(items)) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    if (!Array.isArray(items)) {
+      return res.status(400).json({ error: 'Missing required fields: items' });
+    }
+
+    if (menuType === 'daily_lunch' && !menuId && !date) {
+      return res.status(400).json({ error: 'Daily lunch requires a date' });
     }
 
     // Resolve the effective menu_id
     let effectiveMenuId = menuId;
 
     if (!effectiveMenuId) {
-      // Look up existing menu for this date first
-      const { data: existingMenu } = await supabaseAdmin
-        .from('menus')
-        .select('menu_id')
-        .eq('date', date)
-        .maybeSingle();
-
-      if (existingMenu) {
-        effectiveMenuId = existingMenu.menu_id;
-        // Update existing menu to published
-        const { error: updateError } = await supabaseAdmin
+      if (menuType === 'constant') {
+        // Find the single constant menu row (type='constant', date IS NULL)
+        const { data: constantMenu } = await supabaseAdmin
           .from('menus')
-          .update({ published: true })
-          .eq('menu_id', effectiveMenuId);
-        if (updateError) throw updateError;
-      } else {
-        // Create new menu (DB auto-generates UUID via DEFAULT gen_random_uuid())
-        const { data: newMenu, error: createError } = await supabaseAdmin
-          .from('menus')
-          .insert({ date, published: true })
           .select('menu_id')
-          .single();
-        if (createError) throw createError;
-        effectiveMenuId = newMenu.menu_id;
+          .eq('type', 'constant')
+          .is('date', null)
+          .maybeSingle();
+
+        if (constantMenu) {
+          effectiveMenuId = constantMenu.menu_id;
+          // Ensure it's published
+          const { error: updateError } = await supabaseAdmin
+            .from('menus')
+            .update({ published: true })
+            .eq('menu_id', effectiveMenuId);
+          if (updateError) throw updateError;
+        } else {
+          // Create constant menu row
+          const { data: newMenu, error: createError } = await supabaseAdmin
+            .from('menus')
+            .insert({ type: 'constant', date: null, published: true })
+            .select('menu_id')
+            .single();
+          if (createError) throw createError;
+          effectiveMenuId = newMenu.menu_id;
+        }
+      } else {
+        // Daily lunch: Look up existing menu for this date first
+        const { data: existingMenu } = await supabaseAdmin
+          .from('menus')
+          .select('menu_id')
+          .eq('date', date)
+          .maybeSingle();
+
+        if (existingMenu) {
+          effectiveMenuId = existingMenu.menu_id;
+          // Update existing menu to published
+          const { error: updateError } = await supabaseAdmin
+            .from('menus')
+            .update({ published: true })
+            .eq('menu_id', effectiveMenuId);
+          if (updateError) throw updateError;
+        } else {
+          // Create new menu
+          const { data: newMenu, error: createError } = await supabaseAdmin
+            .from('menus')
+            .insert({ type: 'daily_lunch', date, published: true })
+            .select('menu_id')
+            .single();
+          if (createError) throw createError;
+          effectiveMenuId = newMenu.menu_id;
+        }
       }
     } else {
       // menuId was provided — just set it to published

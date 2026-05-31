@@ -7,10 +7,14 @@ DROP TABLE IF EXISTS menus;
 -- Create menus table
 CREATE TABLE menus (
   menu_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  date DATE UNIQUE NOT NULL,
+  type TEXT NOT NULL DEFAULT 'daily_lunch', -- 'daily_lunch' or 'constant'
+  date DATE, -- NULL for constant menu, date for daily lunch
   published BOOLEAN DEFAULT FALSE,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Add unique constraint so only one constant menu row exists (NULL != NULL in PG, so this is safe)
+CREATE UNIQUE INDEX idx_menus_constant ON menus (type) WHERE type = 'constant';
 
 -- Create menu_items table
 CREATE TABLE menu_items (
@@ -57,9 +61,13 @@ ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE feedback ENABLE ROW LEVEL SECURITY;
 
 -- Policies:
--- Menus: public can read if published
+-- Menus: public can read if published (covers both constant and daily_lunch)
 CREATE POLICY "Menus are viewable if published" ON menus
   FOR SELECT USING (published = TRUE);
+
+-- Seed the single permanent constant menu row
+INSERT INTO menus (type, date, published) VALUES ('constant', NULL, TRUE)
+ON CONFLICT DO NOTHING;
 
 -- Menu items: public can read via menu's published status
 CREATE POLICY "Menu items are viewable if menu is published" ON menu_items

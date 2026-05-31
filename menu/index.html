@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery by the Bay | Today's Menu</title>
-    <meta name="description" content="Freshly baked goods made with love. View today's menu.">
+    <title>Bakery by the Bay | Menu</title>
+    <meta name="description" content="Freshly baked goods made with love. View our menu including daily lunch specials.">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@
             <button class="header__toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
             <ul class="header__nav" id="navLinks">
                 <li><a href="/" class="header__nav-link">Home</a></li>
-                <li><a href="/menu/" class="header__nav-link header__nav-link--active">Today's Menu</a></li>
+                <li><a href="/menu/" class="header__nav-link header__nav-link--active">Menu</a></li>
                 <li><a href="/feedback/" class="header__nav-link">Contact</a></li>
                 <li><a href="/admin/" class="header__nav-link">Staff</a></li>
                 <li>
@@ -47,7 +47,7 @@
     <div class="mobile-overlay" id="mobileOverlay">
         <ul class="mobile-overlay__links">
             <li><a href="/" class="mobile-overlay__link">Home</a></li>
-            <li><a href="/menu/" class="mobile-overlay__link mobile-overlay__link--active">Today's Menu</a></li>
+            <li><a href="/menu/" class="mobile-overlay__link mobile-overlay__link--active">Menu</a></li>
             <li><a href="/feedback/" class="mobile-overlay__link">Contact</a></li>
             <li><a href="/admin/" class="mobile-overlay__link">Staff</a></li>
         </ul>
@@ -55,23 +55,38 @@
 
     <!-- Menu Header Banner -->
     <div class="menu-header">
-        <p class="menu-header__eyebrow">Updated daily</p>
-        <h1 class="menu-header__title">Today's Menu</h1>
-        <p class="menu-header__date" id="menuDate"></p>
+        <p class="menu-header__eyebrow">Handcrafted daily</p>
+        <h1 class="menu-header__title">Menu</h1>
     </div>
 
     <main>
-        <!-- Category Filters -->
-        <div class="menu-categories" id="menuCategories">
-            <button class="menu-category-btn active" data-category="all">All</button>
-        </div>
-
-        <!-- Menu Items -->
-        <section class="menu-items-grid" id="menuItemsGrid">
-            <div class="loading" style="grid-column:1/-1;">
-                <div class="spinner"></div>
-                <p>Loading today's menu...</p>
+        <!-- ===== Section 1: Constant Menu (Our Menu) ===== -->
+        <section class="menu-section" id="constSection">
+            <div class="menu-section__header">
+                <h2 class="menu-section__title">Our Menu</h2>
+                <p class="menu-section__sub">Permanent selection — always available</p>
             </div>
+            <div class="menu-categories" id="constMenuCategories"></div>
+            <div class="menu-items-grid" id="constMenuItemsGrid">
+                <div class="loading" style="grid-column:1/-1;">
+                    <div class="spinner"></div>
+                    <p>Loading menu...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Section 2: Daily Lunch (highlighted) ===== -->
+        <section class="menu-section menu-section--lunch" id="lunchSection" style="display:none;">
+            <div class="lunch-highlight">
+                <div class="lunch-highlight__inner">
+                    <span class="lunch-highlight__badge">✦ Today's Special</span>
+                    <h2 class="lunch-highlight__title">Daily Lunch</h2>
+                    <p class="lunch-highlight__date" id="lunchDate"></p>
+                    <p class="lunch-highlight__desc">Our rotating lunch special — updated regularly. Order ahead or grab it while it's fresh!</p>
+                </div>
+            </div>
+            <div class="menu-categories" id="lunchMenuCategories"></div>
+            <div class="menu-items-grid" id="lunchMenuItemsGrid"></div>
         </section>
     </main>
 

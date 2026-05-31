@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery by the Bay - Constant Menu</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .menu-item-inputs { display: none; margin-top: 1rem; }
+        .menu-item-inputs.active { display: block; }
+        .constant-menu-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .constant-menu-actions .btn { flex: 1; min-width: 140px; }
+        .btn--danger {
+            background: var(--terracotta-hover);
+            color: var(--warm-white);
+        }
+        .btn--danger:hover {
+            background: #8C4C34;
+            color: var(--warm-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        .btn--success {
+            background: var(--sage);
+            color: var(--warm-white);
+        }
+        .btn--success:hover {
+            background: var(--sage-dark);
+            color: var(--warm-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-brand">
+                <h2>🥐 Bakery Admin</h2>
+                <p>Management Portal</p>
+            </div>
+            <nav class="admin-sidebar-nav">
+                <a href="dashboard.html" class="admin-sidebar-link">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="menu-upload.html" class="admin-sidebar-link">
+                    <span>📸</span> Daily Lunch
+                </a>
+                <a href="constant-menu.html" class="admin-sidebar-link active">
+                    <span>📋</span> Constant Menu
+                </a>
+                <button class="admin-sidebar-link" id="btnLogoutNav">
+                    <span>🚪</span> Sign Out
+                </button>
+            </nav>
+            <div class="admin-sidebar-footer">
+                <button class="btn btn--ghost btn--sm btn--block" id="btnLogout" style="color: rgba(255,255,255,0.6); font-size: 0.8rem;">
+                    🚪 Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <h1>Constant Menu</h1>
+                <div class="admin-topbar-right">
+                    <button class="btn-logout-mobile" id="btnLogoutMobile" title="Sign out">🚪</button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <div class="upload-container">
+                    <div id="error-message" class="message message--error"></div>
+                    <div id="success-message" class="message message--success"></div>
+
+                    <!-- Step 1: Info -->
+                    <div class="card">
+                        <div class="card__header">
+                            <span style="font-size:1.25rem;">📋</span>
+                            <h3>Permanent Menu Items</h3>
+                        </div>
+                        <p class="text-muted" style="margin-bottom:0.5rem;">
+                            This is your bakery's permanent menu — cakes, coffee, sandwiches, etc. 
+                            These items stay visible every day and don't change with the daily lunch special.
+                        </p>
+                        <p class="text-muted" style="font-size:var(--text-sm);">
+                            <strong>From Shopify:</strong> Items like Butter Tarts ($3.75), Cinnamon Buns ($8.75), Cookies ($5.00), 
+                            Fruit/Cream Tarts ($5.00), Fruit Pies ($25.00), Mini Cheesecakes ($5.00), Muffins ($7.00), 
+                            Pecan or Cream Pies ($30.00), Scones ($5.25), and more have been added as a starting point.
+                        </p>
+                    </div>
+
+                    <!-- Camera / Upload Section -->
+                    <div class="card">
+                        <div class="card__header">
+                            <span style="font-size:1.25rem;">📸</span>
+                            <h3>Upload Photo to Add Items</h3>
+                        </div>
+                        <p class="text-muted" style="margin-bottom:1rem;">
+                            Take a photo of a written menu or upload an image to bulk-add items via OCR
+                        </p>
+                        <div class="instructions-box">
+                            💡 Tip: Make sure the menu is well-lit and clearly visible for best results.
+                        </div>
+
+                        <div class="camera-section">
+                            <div class="camera-preview">
+                                <video id="videoElement" autoplay playsinline></video>
+                            </div>
+                            <div class="camera-actions">
+                                <button class="btn btn--primary" id="btnCapture">📷 Capture Photo</button>
+                                <button class="btn btn--outline" id="btnUploadFile">📁 Upload File</button>
+                                <input type="file" id="fileInput" class="file-input" accept="image/*" style="display:none;">
+                            </div>
+                            <p id="cameraStatus" class="text-small text-muted" style="margin-top:0.75rem;">Initializing camera...</p>
+                        </div>
+                    </div>
+
+                    <!-- Items Editor -->
+                    <div class="card">
+                        <div class="card__header">
+                            <span style="font-size:1.25rem;">✏️</span>
+                            <h3>Current Constant Menu Items</h3>
+                        </div>
+                        <p class="text-muted" style="margin-bottom:1rem;">
+                            Edit, add, or remove items. Changes are saved when you click "Save Constant Menu".
+                        </p>
+
+                        <div id="menuItemsContainer">
+                            <div class="loading" id="itemsLoading">
+                                <div class="spinner"></div>
+                                <p>Loading current menu items...</p>
+                            </div>
+                        </div>
+
+                        <div class="constant-menu-actions">
+                            <button class="btn btn--outline" id="btnAddItem">
+                                + Add Item
+                            </button>
+                        </div>
+
+                        <button class="btn btn--success btn--block" id="btnSaveConstant" style="margin-top:0.5rem;">
+                            💾 Save Constant Menu
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/nav.js" defer></script>
+    <script type="module" src="./js/camera.js"></script>
+    <script type="module" src="./js/constant-menu.js"></script>
+</body>
+</html>

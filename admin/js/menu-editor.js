@@ -163,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    type: 'daily_lunch',
                     date: today,
                     items: items
                 })

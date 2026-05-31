@@ -6,7 +6,10 @@
       "Bash(node *)",
       "Bash(taskkill //PID 8288 //F)",
       "Bash(npm list *)",
-      "Bash(npm uninstall *)"
+      "Bash(npm uninstall *)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-CimInstance Win32_Process -Filter \"name='node.exe'\")",
+      "PowerShell($env:PORT = \"3001\"; npm start)"
     ]
   }
 }

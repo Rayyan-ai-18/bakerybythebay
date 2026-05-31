@@ -8,7 +8,8 @@ To set up the database for Bakery by the Bay, follow these steps:
 3. Click "New Query"
 
 ## Step 2: Execute the SQL Migration
-Copy and paste the following SQL into the query editor:
+
+Copy and paste the SQL below into the Supabase SQL Editor and click RUN.
 
 ```sql
 -- Drop tables if they exist (for clean slate)
@@ -20,7 +21,8 @@ DROP TABLE IF EXISTS menus;
 -- Create menus table
 CREATE TABLE menus (
   menu_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  date DATE UNIQUE NOT NULL,
+  type TEXT NOT NULL DEFAULT 'daily_lunch', -- 'daily_lunch' or 'constant'
+  date DATE, -- NULL for constant menu, date for daily lunch
   published BOOLEAN DEFAULT FALSE,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -64,7 +66,7 @@ ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE feedback ENABLE ROW LEVEL SECURITY;
 
 -- Policies:
--- Menus: public can read if published
+-- Menus: public can read if published (covers both constant and daily_lunch)
 CREATE POLICY "Menus are viewable if published" ON menus
   FOR SELECT USING (published = TRUE);
 
@@ -76,17 +78,41 @@ CREATE POLICY "Menu items are viewable if menu is published" ON menu_items
     )
   );
 
--- Orders: public can insert (customer places order), but only authenticated service role can select/update
+-- Orders: public can insert (customer places order)
 CREATE POLICY "Anyone can insert orders" ON orders
   FOR INSERT WITH CHECK (TRUE);
+
+-- Orders: public can select orders by booking_id (for the confirmation page)
+CREATE POLICY "Anyone can view orders by booking_id" ON orders
+  FOR SELECT USING (TRUE);
 
 -- Feedback: public can insert
 CREATE POLICY "Anyone can insert feedback" ON feedback
   FOR INSERT WITH CHECK (TRUE);
 
 -- For admin dashboard, we'll rely on service role key bypassing RLS (as per plan).
+
+-- Seed the single permanent constant menu row
+INSERT INTO menus (type, date, published) VALUES ('constant', NULL, TRUE)
+ON CONFLICT DO NOTHING;
 ```
 
+> **If you already have existing tables** (with the old schema), run this migration instead:
+>
+> ```sql
+> -- Add type column to existing menus table
+> ALTER TABLE menus ADD COLUMN type TEXT NOT NULL DEFAULT 'daily_lunch';
+>
+> -- Make date column nullable (constant menu has NULL date)
+> ALTER TABLE menus ALTER COLUMN date DROP NOT NULL;
+>
+> -- Create unique index so only one constant menu row exists
+> CREATE UNIQUE INDEX IF NOT EXISTS idx_menus_constant ON menus (type) WHERE type = 'constant';
+>
+> -- Seed the single permanent constant menu row
+> INSERT INTO menus (type, date, published) VALUES ('constant', NULL, TRUE)
+> ON CONFLICT DO NOTHING;
+> ```
 
 ## Step 3: Run the Query
 1. Click the "RUN" button to execute the SQL
