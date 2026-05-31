@@ -57,7 +57,7 @@ async function loadConstantMenu() {
         const { data, error } = await supabase
             .from('menus')
             .select('*, menu_items(*)')
-            .eq('type', 'constant')
+            .eq('date', '1970-01-01')
             .eq('published', true)
             .maybeSingle();
 

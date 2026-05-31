@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4B896"/>
+      <stop offset="100%" stop-color="#C4A078"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.25)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="450" fill="url(#bg)"/>
+
+  <!-- Subtle grain texture -->
+  <rect width="600" height="450" fill="url(#glow)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="300" cy="220" r="120" fill="rgba(255,255,255,0.12)"/>
+  <circle cx="300" cy="220" r="80" fill="rgba(255,255,255,0.08)"/>
+
+  <!-- Decorative top corner -->
+  <circle cx="500" cy="-50" r="200" fill="rgba(255,255,255,0.06)"/>
+  <circle cx="100" cy="500" r="150" fill="rgba(255,255,255,0.05)"/>
+
+  <!-- Product icon -->
+  <g transform="translate(300, 215)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M190,290 C190,350 410,350 410,290 C410,250 380,230 300,220 C220,230 190,250 190,290 Z M210,290 C210,280 240,250 300,245 C360,250 390,280 390,290"/>
+  </g>
+
+  <!-- Separator -->
+  <line x1="230" y1="320" x2="370" y2="320" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+
+  <!-- Product name -->
+  <text x="300" y="355" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="300" font-size="28" fill="rgba(255,255,255,0.85)" letter-spacing="0.02em">
+    <tspan x="300" dy="0">Fruit</tspan>
+    <tspan x="300" dy="34">Pies</tspan>
+  </text>
+
+  <!-- Price -->
+  <text x="300" y="398" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-weight="300" font-size="16" fill="rgba(255,255,255,0.55)" letter-spacing="0.05em">$25.00</text>
+</svg>

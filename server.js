@@ -190,12 +190,11 @@ app.post('/api/publish-menu', async (req, res) => {
 
     if (!effectiveMenuId) {
       if (menuType === 'constant') {
-        // Find the single constant menu row (type='constant', date IS NULL)
+        // Find the single constant menu row (sentinel date '1970-01-01' since type column migration pending)
         const { data: constantMenu } = await supabaseAdmin
           .from('menus')
           .select('menu_id')
-          .eq('type', 'constant')
-          .is('date', null)
+          .eq('date', '1970-01-01')
           .maybeSingle();
 
         if (constantMenu) {
@@ -207,10 +206,10 @@ app.post('/api/publish-menu', async (req, res) => {
             .eq('menu_id', effectiveMenuId);
           if (updateError) throw updateError;
         } else {
-          // Create constant menu row
+          // Create constant menu row (sentinel date '1970-01-01' since type column migration pending)
           const { data: newMenu, error: createError } = await supabaseAdmin
             .from('menus')
-            .insert({ type: 'constant', date: null, published: true })
+            .insert({ date: '1970-01-01', published: true })
             .select('menu_id')
             .single();
           if (createError) throw createError;
@@ -236,7 +235,7 @@ app.post('/api/publish-menu', async (req, res) => {
           // Create new menu
           const { data: newMenu, error: createError } = await supabaseAdmin
             .from('menus')
-            .insert({ type: 'daily_lunch', date, published: true })
+            .insert({ date, published: true })
             .select('menu_id')
             .single();
           if (createError) throw createError;

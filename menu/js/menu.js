@@ -41,10 +41,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
+            // Constant menu is identified by sentinel date '1970-01-01' (type column migration pending)
             const { data, error } = await supabase
                 .from('menus')
                 .select('*, menu_items(*)')
-                .eq('type', 'constant')
+                .eq('date', '1970-01-01')
                 .eq('published', true)
                 .maybeSingle();
 
@@ -87,11 +88,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ===== Fetch Latest Published Daily Lunch Menu =====
     async function loadDailyLunch() {
         try {
+            // Daily lunch = most recent published menu that isn't the constant sentinel date
+            // (type column migration pending, so we exclude the constant sentinel instead)
             const { data, error } = await supabase
                 .from('menus')
                 .select('*, menu_items(*)')
-                .eq('type', 'daily_lunch')
                 .eq('published', true)
+                .neq('date', '1970-01-01')
                 .order('date', { ascending: false })
                 .limit(1)
                 .maybeSingle();
