@@ -1266,9 +1266,10 @@ p {
 
 /* Menu Header Banner */
 .menu-header {
-    background: var(--espresso);
+    background: var(--warm-white);
     padding: calc(var(--nav-height) + 0.75rem) var(--page-padding) 1rem;
     text-align: left;
+    border-bottom: 1px solid var(--border);
 }
 
 .menu-header__eyebrow {
@@ -1277,7 +1278,7 @@ p {
     font-weight: 400;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--sage);
+    color: var(--terracotta);
     margin-bottom: 0.5rem;
 }
 
@@ -1286,7 +1287,7 @@ p {
     font-style: italic;
     font-weight: 300;
     font-size: clamp(2.2rem, 6vw, 3.5rem);
-    color: var(--cream);
+    color: var(--espresso);
     margin-bottom: 0.35rem;
 }
 
@@ -1294,13 +1295,13 @@ p {
     font-family: var(--font-body);
     font-size: var(--text-sm);
     font-weight: 300;
-    color: rgba(250, 247, 242, 0.6);
+    color: var(--brown-light);
 }
 
 /* lg: 1024px+ — tighter header */
 @media (min-width: 1024px) {
     .menu-header {
-        padding: calc(var(--nav-height) + 0.75rem) var(--page-padding) 1.25rem;
+        padding: calc(var(--nav-height) + 0.75rem) var(--page-padding) 1.5rem;
         text-align: center;
     }
 }
