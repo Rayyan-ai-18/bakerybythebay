@@ -26,10 +26,13 @@ function getProductPhoto(name) {
     return entry ? PRODUCT_PHOTO_BASE + entry.file : null;
 }
 
+// Bump PHOTO_VERSION whenever a product photo file changes, to bust stale caches.
+const PHOTO_VERSION = '2';
+
 function productPhotoMarkup(name) {
     const src = getProductPhoto(name);
     if (!src) return '';
-    return `<div class="menu-item-photo"><img src="${src}" alt="${name}" loading="lazy"></div>`;
+    return `<div class="menu-item-photo"><img src="${src}?v=${PHOTO_VERSION}" alt="${name}" loading="lazy"></div>`;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
