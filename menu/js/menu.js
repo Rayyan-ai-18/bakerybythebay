@@ -2,6 +2,36 @@
 import { supabase } from '../../js/supabase-client.js';
 import { formatDateCanada } from '../../js/canada-date.js';
 
+// ===== Exact product photos from bakerybythebay.myshopify.com =====
+// Mapped by keyword to the closest real store photo. Items with no
+// matching store photo (e.g. croissants, coffee) intentionally show none.
+const PRODUCT_PHOTO_BASE = '../assets/images/products/';
+const PRODUCT_PHOTOS = [
+    { match: /cinnamon/i,            file: 'cinnamon-buns.webp' },
+    { match: /butter tart/i,         file: 'butter-tarts.webp' },
+    { match: /scone/i,               file: 'scones.webp' },
+    { match: /square/i,              file: 'squares.webp' },
+    { match: /cupcake/i,             file: 'cupcakes.webp' },
+    { match: /(fruit|cream).*tart/i, file: 'fruit-cream-tarts.webp' },
+    { match: /cheesecake/i,          file: 'mini-cheesecakes.webp' },
+    { match: /cookie/i,              file: 'cookies.webp' },
+    { match: /muffin/i,              file: 'muffins.webp' },
+    { match: /pecan|cream pie/i,     file: 'pecan-or-cream-pies.webp' },
+    { match: /fruit pie|pie/i,       file: 'fruit-pies.webp' },
+];
+
+function getProductPhoto(name) {
+    if (!name) return null;
+    const entry = PRODUCT_PHOTOS.find(p => p.match.test(name));
+    return entry ? PRODUCT_PHOTO_BASE + entry.file : null;
+}
+
+function productPhotoMarkup(name) {
+    const src = getProductPhoto(name);
+    if (!src) return '';
+    return `<div class="menu-item-photo"><img src="${src}" alt="${name}" loading="lazy"></div>`;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     // Constant Menu elements
     const constMenuItemsGrid = document.getElementById('constMenuItemsGrid');
@@ -192,6 +222,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         constMenuItemsGrid.innerHTML = filtered.map((item, idx) => `
             <div class="menu-item-card animate-fade-in-up" style="animation-delay:${idx * 0.05}s">
+                ${productPhotoMarkup(item.name)}
                 <div class="item-category">${item.category}</div>
                 <h3>${item.name}</h3>
                 ${item.description ? `<p class="item-description">${item.description}</p>` : ''}
@@ -230,6 +261,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         lunchMenuItemsGrid.innerHTML = filtered.map((item, idx) => `
             <div class="menu-item-card menu-item-card--lunch animate-fade-in-up" style="animation-delay:${idx * 0.05}s">
+                ${productPhotoMarkup(item.name)}
                 <div class="item-category">${item.category}</div>
                 <h3>${item.name}</h3>
                 ${item.description ? `<p class="item-description">${item.description}</p>` : ''}
